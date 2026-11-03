@@ -1,0 +1,35 @@
+{
+ "preset": "groot-q3-nr",
+ "seed": 1,
+ "peak_gb": 8.99,
+ "results": [
+  {
+   "task": "sql_report",
+   "passed": true,
+   "why": "",
+   "seconds": 20.4,
+   "first_code": 5.2,
+   "finish": "stop",
+   "tokens": 108,
+   "tok_s": 7.04,
+   "reasoning_chars": 0,
+   "content": "```sql\nSELECT\n  c.title,\n  COUNT(g.grade) AS n,\n  ROUND(AVG(g.grade), 2) AS avg_grade,\n  SUM(CASE WHEN g.grade >= 5 THEN 1 ELSE 0 END) AS passed\nFROM courses c\nJOIN grades g ON g.course_id = c.id\nGROUP BY c.id, c.title\nHAVING COUNT(g.grade) >= 3\nORDER BY ROUND(AVG(g.grade), 2) DESC, c.title ASC;\n```",
+   "reasoning": "",
+   "attempts": 1
+  },
+  {
+   "task": "js_retry",
+   "passed": true,
+   "why": "",
+   "seconds": 26.5,
+   "first_code": 5.7,
+   "finish": "stop",
+   "tokens": 151,
+   "tok_s": 7.24,
+   "reasoning_chars": 0,
+   "content": "```javascript\nfunction retry(fn, options) {\n  const { attempts = 3, baseMs = 100, shouldRetry = () => true } = options || {};\n\n  return (async () => {\n    let attempt = 1;\n    while (true) {\n      try {\n        return await fn(attempt);\n      } catch (error) {\n        if (attempt >= attempts || !shouldRetry(error)) {\n          throw error;\n        }\n        await new Promise(resolve => setTimeout(resolve, baseMs * 2 ** (attempt - 1)));\n        attempt++;\n      }\n    }\n  })();\n}\n\nmodule.exports = { retry };\n```",
+   "reasoning": "",
+   "attempts": 1
+  }
+ ]
+}

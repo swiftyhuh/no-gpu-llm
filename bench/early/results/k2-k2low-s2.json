@@ -1,0 +1,142 @@
+[
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "intervals",
+    "seconds": 31.565493759000674,
+    "first_token_seconds": 2.6905240480009525,
+    "first_answer_seconds": 2.690526218000741,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    # Sort by start time without mutating the input\n    sorted_intervals = sorted(intervals, key=lambda x: (x[0], x[1]))\n    \n    merged = []\n    for interval in sorted_intervals:\n        if not merged or interval[0] > merged[-1][1]:\n            merged.append(interval)\n        elif interval[0] == merged[-1][1] + 1:\n            # Merge touching intervals\n            merged[-1] = (merged[-1][0], interval[1])\n        else:\n            # Overlapping: merge\n            merged[-1] = (merged[-1][0], max(merged[-1][1], interval[1]))\n    \n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 165,
+      "prompt_tokens": 64,
+      "total_tokens": 229,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 64,
+      "prompt_ms": 2514.459,
+      "prompt_per_token_ms": 39.288421875,
+      "prompt_per_second": 25.45279123660398,
+      "predicted_n": 165,
+      "predicted_ms": 29048.634,
+      "predicted_per_token_ms": 177.1258170731707,
+      "predicted_per_second": 5.645704372880323
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    # Sort by start time without mutating the input\n    sorted_intervals = sorted(intervals, key=lambda x: (x[0], x[1]))\n    \n    merged = []\n    for interval in sorted_intervals:\n        if not merged or interval[0] > merged[-1][1]:\n            merged.append(interval)\n        elif interval[0] == merged[-1][1] + 1:\n            # Merge touching intervals\n            merged[-1] = (merged[-1][0], interval[1])\n        else:\n            # Overlapping: merge\n            merged[-1] = (merged[-1][0], max(merged[-1][1], interval[1]))\n    \n    return merged\n"
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "toposort",
+    "seconds": 66.51075538300029,
+    "first_token_seconds": 3.31216760100142,
+    "first_answer_seconds": 3.3121696670004894,
+    "content": "```python\ndef topo_sort(graph):\n    from collections import defaultdict, deque\n\n    # Copy graph to avoid mutation\n    graph = dict(graph)\n    \n    # Build reverse dependencies: node -> list of dependent nodes\n    reverse_deps = defaultdict(list)\n    all_nodes = set()\n    for node, deps in graph.items():\n        all_nodes.add(node)\n        all_nodes.update(deps)\n        for dep in deps:\n            reverse_deps[dep].append(node)\n    \n    # Track prerequisites already added\n    added = set()\n    \n    result = []\n    \n    for node in sorted(all_nodes):\n        if node in added:\n            continue\n        # Check for cycles using DFS\n        visited = {}\n        def dfs(n, stack):\n            visited[n] = 1  # visiting\n            for dep in graph.get(n, []):\n                if dep not in visited:\n                    visited[dep] = 2  # done\n                elif visited[dep] == 1:\n                    raise ValueError(\"Cycle detected\")\n            visited[n] = 2  # done\n        \n        dfs(node, None)\n        added.add(node)\n    \n    for node in sorted(all_nodes):\n        if node in added:\n            continue\n        # Collect prerequisites\n        prereqs = []\n        for dep in sorted(set(graph.get(node, []))):\n            if dep in added:\n                prereqs.append(dep)\n            else:\n                # Recursively add prerequisites\n                result.extend(topo_sort({dep: graph.get(dep, [])}))\n                prereqs.append(dep)\n        result.extend(sorted(prereqs))\n        added.add(node)\n    \n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 334,
+      "prompt_tokens": 76,
+      "total_tokens": 410,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 3127.502,
+      "prompt_per_token_ms": 41.151342105263154,
+      "prompt_per_second": 24.300544012441875,
+      "predicted_n": 334,
+      "predicted_ms": 63370.291,
+      "predicted_per_token_ms": 190.30117417417418,
+      "predicted_per_second": 5.254828323259554
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 58, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "code": "def topo_sort(graph):\n    from collections import defaultdict, deque\n\n    # Copy graph to avoid mutation\n    graph = dict(graph)\n    \n    # Build reverse dependencies: node -> list of dependent nodes\n    reverse_deps = defaultdict(list)\n    all_nodes = set()\n    for node, deps in graph.items():\n        all_nodes.add(node)\n        all_nodes.update(deps)\n        for dep in deps:\n            reverse_deps[dep].append(node)\n    \n    # Track prerequisites already added\n    added = set()\n    \n    result = []\n    \n    for node in sorted(all_nodes):\n        if node in added:\n            continue\n        # Check for cycles using DFS\n        visited = {}\n        def dfs(n, stack):\n            visited[n] = 1  # visiting\n            for dep in graph.get(n, []):\n                if dep not in visited:\n                    visited[dep] = 2  # done\n                elif visited[dep] == 1:\n                    raise ValueError(\"Cycle detected\")\n            visited[n] = 2  # done\n        \n        dfs(node, None)\n        added.add(node)\n    \n    for node in sorted(all_nodes):\n        if node in added:\n            continue\n        # Collect prerequisites\n        prereqs = []\n        for dep in sorted(set(graph.get(node, []))):\n            if dep in added:\n                prereqs.append(dep)\n            else:\n                # Recursively add prerequisites\n                result.extend(topo_sort({dep: graph.get(dep, [])}))\n                prereqs.append(dep)\n        result.extend(sorted(prereqs))\n        added.add(node)\n    \n    return result\n"
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "window",
+    "seconds": 20.21756793199893,
+    "first_token_seconds": 2.8256693280000036,
+    "first_answer_seconds": 2.8256700160000037,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    curr_sum = sum(nums[:k])\n    result.append(curr_sum)\n    for i in range(k, len(nums)):\n        curr_sum = curr_sum - nums[i - k] + nums[i]\n        result.append(curr_sum)\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 94,
+      "prompt_tokens": 64,
+      "total_tokens": 158,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 64,
+      "prompt_ms": 2617.284,
+      "prompt_per_token_ms": 40.8950625,
+      "prompt_per_second": 24.452829727305097,
+      "predicted_n": 94,
+      "predicted_ms": 17578.086,
+      "predicted_per_token_ms": 189.01167741935484,
+      "predicted_per_second": 5.290678404918488
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    curr_sum = sum(nums[:k])\n    result.append(curr_sum)\n    for i in range(k, len(nums)):\n        curr_sum = curr_sum - nums[i - k] + nums[i]\n        result.append(curr_sum)\n    return result\n"
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "security",
+    "seconds": 44.70976772299946,
+    "first_token_seconds": 4.682465002999379,
+    "first_answer_seconds": 4.682465554998998,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        if not isinstance(ip, ipaddress.IPv4Address):\n            return False\n        if ip.is_private and ip.ip == \"0.0.0.0\":\n            return False\n        if ip.is_private and ip.ip not in (\n            \"10.0.0.0\", \"172.16.0.0\", \"192.168.0.0\"\n        ):\n            return False\n        # Enforce RFC1918 ranges explicitly\n        private_prefixes = [\n            ipaddress.ip_network(\"10.0.0.0/8\", strict=False),\n            ipaddress.ip_network(\"172.16.0.0/12\", strict=False),\n            ipaddress.ip_network(\"192.168.0.0/16\", strict=False),\n        ]\n        return any(ip in net for net in private_prefixes)\n    except ValueError:\n        return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 209,
+      "prompt_tokens": 106,
+      "total_tokens": 315,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 106,
+      "prompt_ms": 4483.017,
+      "prompt_per_token_ms": 42.29261320754717,
+      "prompt_per_second": 23.644790996777395,
+      "predicted_n": 209,
+      "predicted_ms": 40213.971,
+      "predicted_per_token_ms": 193.33639903846154,
+      "predicted_per_second": 5.172331774944584
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 27, in <module>\n    for x in ['10.0.0.0','10.255.255.255','172.16.0.0','172.31.255.255','192.168.1.2']: assert is_private_ipv4(x), x\n                                                                                               ~~~~~~~~~~~~~~~^^^\n  File \"<string>\", line 11, in is_private_ipv4\n    if ip.is_private and ip.ip == \"0.0.0.0\":\n                         ^^^^^\nAttributeError: 'IPv4Address' object has no attribute 'ip'\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        if not isinstance(ip, ipaddress.IPv4Address):\n            return False\n        if ip.is_private and ip.ip == \"0.0.0.0\":\n            return False\n        if ip.is_private and ip.ip not in (\n            \"10.0.0.0\", \"172.16.0.0\", \"192.168.0.0\"\n        ):\n            return False\n        # Enforce RFC1918 ranges explicitly\n        private_prefixes = [\n            ipaddress.ip_network(\"10.0.0.0/8\", strict=False),\n            ipaddress.ip_network(\"172.16.0.0/12\", strict=False),\n            ipaddress.ip_network(\"192.168.0.0/16\", strict=False),\n        ]\n        return any(ip in net for net in private_prefixes)\n    except ValueError:\n        return False\n"
+    }
+  }
+]

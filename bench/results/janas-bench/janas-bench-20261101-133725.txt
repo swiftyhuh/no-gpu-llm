@@ -1,0 +1,22 @@
+janas-bench v2026.10.30.1, 20261101-133725
+system:  Linux 7.2.11-arch1-1 x86_64
+CPU:     Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (4 performance cores, 8 threads on them, 8 usable in all)
+memory:  15.5 GiB, 14.2 GiB available; power: mains
+GPU:     none usable: turned off by JANAS_GPU=0
+NPU:     none usable: turned off by JANAS_NPU=0
+model:   Qwen3.6 35B A3B Uncensored Heretic Native MTP Preserved (qwen35moe), context 4096 tokens, expert cache 5.0 GiB, up to 8 compute threads, no GPU (turned off by JANAS_GPU=0), drafts from the MTP block, down matrix at 4 bits (memory)
+test:    prompt 64 tokens of prose (not repeated), 16 generated tokens, greedy;
+         with MTP drafts: a chat reply of as many tokens, greedy and sampled
+         as the chat samples (temperature 0.7, top-k 20, top-p 0.8), no reasoning
+
+warming up the expert cache...
+measuring 2 configurations, 1 rounds...
+
+configuration               prefill       decode   MTP greedy  MTP sampled     cache
+8 threads                  26.1 tok/s    6.0 tok/s    8.2 tok/s    9.1 tok/s     81.1%
+4 threads                  23.4 tok/s    6.4 tok/s    8.2 tok/s    9.8 tok/s     81.2%
+
+result:  prefill 26.1 tok/s, decode 6.4 tok/s, with MTP 8.2 tok/s greedy, 9.8 tok/s sampled
+         (the configuration the engine chose for each kind of pass, as it runs in a chat)
+MTP:     drafts kept 70% greedy, 91% sampled (all configurations)
+choices: mode max; one token: 4 threads (130.8 ms/token); 2-16 tokens: 4 threads (66.7 ms/token); 17-63 tokens: 8 threads (37.7 ms/token); blocks: 8 threads

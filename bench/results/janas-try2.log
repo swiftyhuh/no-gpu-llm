@@ -1,0 +1,81 @@
+
+== This machine
+   CPU:    Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz, 8 threads, avx2
+   memory: 15.5 GiB, 14.0 GiB free now
+   disk:   SK hynix PC711 HFS512GDE9X073N, 64.6 GiB free for the models
+   system: Arch Linux, Linux 7.2.11-arch1-1, gcc (GCC) 16.2.1 20260810
+   GPU:    vulkaninfo not installed; Janas will be built with GPU support
+   power:  mains; load now 3.76
+   the machine is busy: the speeds will say so
+
+== Building Janas (./build.sh release test): a few minutes
+   built, and its tests passed
+
+== Level medium: Qwen_Qwen3.6-35B-A3B-Q4_K_M
+   janas-get qwen3.6-35b-a3b: the GGUF goes once converted (kept: --keep)
+janas-get: JANAS_CFLAGS is not a variable of Janas: it does nothing
+== qwen3.6-35b-a3b: downloading, converted (prabanta-dev/Qwen3.6-35B-A3B-JNS)
+   qwen3.6-35b-a3b-q4km.jns from prabanta-dev/Qwen3.6-35B-A3B-JNS, 22.29 GB
+   0.13 of 22.29 GB (1%), 14 MB/s       0.27 of 22.29 GB (1%), 14 MB/s       0.40 of 22.29 GB (2%), 15 MB/s       0.54 of 22.29 GB (2%), 15 MB/s       0.67 of 22.29 GB (3%), 15 MB/s       0.81 of 22.29 GB (4%), 15 MB/s       0.94 of 22.29 GB (4%), 15 MB/s       1.07 of 22.29 GB (5%), 15 MB/s       1.21 of 22.29 GB (5%), 15 MB/s       1.34 of 22.29 GB (6%), 15 MB/s       1.48 of 22.29 GB (7%), 15 MB/s       1.61 of 22.29 GB (7%), 15 MB/s       1.74 of 22.29 GB (8%), 16 MB/s       1.88 of 22.29 GB (8%), 16 MB/s       2.01 of 22.29 GB (9%), 16 MB/s       2.15 of 22.29 GB (10%), 16 MB/s       2.28 of 22.29 GB (10%), 16 MB/s       2.42 of 22.29 GB (11%), 16 MB/s       2.55 of 22.29 GB (11%), 16 MB/s       2.68 of 22.29 GB (12%), 16 MB/s       2.82 of 22.29 GB (13%), 16 MB/s       2.95 of 22.29 GB (13%), 16 MB/s       3.09 of 22.29 GB (14%), 16 MB/s       3.22 of 22.29 GB (14%), 16 MB/s       3.36 of 22.29 GB (15%), 16 MB/s       3.49 of 22.29 GB (16%), 16 MB/s       3.62 of 22.29 GB (16%), 16 MB/s       3.76 of 22.29 GB (17%), 16 MB/s       3.89 of 22.29 GB (17%), 16 MB/s       4.03 of 22.29 GB (18%), 16 MB/s       4.16 of 22.29 GB (19%), 16 MB/s       4.29 of 22.29 GB (19%), 16 MB/s       4.43 of 22.29 GB (20%), 16 MB/s       4.56 of 22.29 GB (20%), 16 MB/s       4.70 of 22.29 GB (21%), 16 MB/s       4.83 of 22.29 GB (22%), 16 MB/s       4.97 of 22.29 GB (22%), 16 MB/s       5.10 of 22.29 GB (23%), 15 MB/s       5.23 of 22.29 GB (23%), 15 MB/s       5.37 of 22.29 GB (24%), 15 MB/s       5.50 of 22.29 GB (25%), 15 MB/s       5.64 of 22.29 GB (25%), 15 MB/s       5.77 of 22.29 GB (26%), 15 MB/s       5.91 of 22.29 GB (26%), 15 MB/s       6.04 of 22.29 GB (27%), 15 MB/s       6.17 of 22.29 GB (28%), 15 MB/s       6.31 of 22.29 GB (28%), 15 MB/s       6.44 of 22.29 GB (29%), 15 MB/s       6.58 of 22.29 GB (30%), 15 MB/s       6.71 of 22.29 GB (30%), 15 MB/s       6.85 of 22.29 GB (31%), 15 MB/s       6.98 of 22.29 GB (31%), 15 MB/s       7.11 of 22.29 GB (32%), 15 MB/s       7.25 of 22.29 GB (33%), 15 MB/s       7.38 of 22.29 GB (33%), 15 MB/s       7.52 of 22.29 GB (34%), 15 MB/s       7.65 of 22.29 GB (34%), 15 MB/s       7.78 of 22.29 GB (35%), 15 MB/s       7.92 of 22.29 GB (36%), 15 MB/s       8.05 of 22.29 GB (36%), 15 MB/s       8.19 of 22.29 GB (37%), 15 MB/s       8.32 of 22.29 GB (37%), 15 MB/s       8.46 of 22.29 GB (38%), 15 MB/s       8.59 of 22.29 GB (39%), 15 MB/s       8.72 of 22.29 GB (39%), 15 MB/s       8.86 of 22.29 GB (40%), 15 MB/s       8.99 of 22.29 GB (40%), 15 MB/s       9.13 of 22.29 GB (41%), 15 MB/s       9.26 of 22.29 GB (42%), 15 MB/s       9.40 of 22.29 GB (42%), 15 MB/s       9.53 of 22.29 GB (43%), 15 MB/s       9.66 of 22.29 GB (43%), 15 MB/s       9.80 of 22.29 GB (44%), 15 MB/s       9.93 of 22.29 GB (45%), 15 MB/s       10.07 of 22.29 GB (45%), 15 MB/s       10.20 of 22.29 GB (46%), 15 MB/s       10.33 of 22.29 GB (46%), 15 MB/s       10.47 of 22.29 GB (47%), 15 MB/s       10.60 of 22.29 GB (48%), 15 MB/s       10.74 of 22.29 GB (48%), 15 MB/s       10.87 of 22.29 GB (49%), 15 MB/s       11.01 of 22.29 GB (49%), 15 MB/s       11.14 of 22.29 GB (50%), 15 MB/s       11.27 of 22.29 GB (51%), 15 MB/s       11.41 of 22.29 GB (51%), 15 MB/s       11.54 of 22.29 GB (52%), 15 MB/s       11.68 of 22.29 GB (52%), 15 MB/s       11.81 of 22.29 GB (53%), 15 MB/s       11.95 of 22.29 GB (54%), 15 MB/s       12.08 of 22.29 GB (54%), 15 MB/s       12.21 of 22.29 GB (55%), 15 MB/s       12.35 of 22.29 GB (55%), 15 MB/s       12.48 of 22.29 GB (56%), 15 MB/s       12.62 of 22.29 GB (57%), 15 MB/s       12.75 of 22.29 GB (57%), 15 MB/s       12.88 of 22.29 GB (58%), 15 MB/s       13.02 of 22.29 GB (58%), 15 MB/s       13.15 of 22.29 GB (59%), 15 MB/s       13.29 of 22.29 GB (60%), 15 MB/s       13.42 of 22.29 GB (60%), 15 MB/s       13.56 of 22.29 GB (61%), 15 MB/s       13.69 of 22.29 GB (61%), 15 MB/s       13.82 of 22.29 GB (62%), 15 MB/s       13.96 of 22.29 GB (63%), 15 MB/s       14.09 of 22.29 GB (63%), 15 MB/s       14.23 of 22.29 GB (64%), 15 MB/s       14.36 of 22.29 GB (64%), 15 MB/s       14.50 of 22.29 GB (65%), 15 MB/s       14.63 of 22.29 GB (66%), 15 MB/s       14.76 of 22.29 GB (66%), 15 MB/s       14.90 of 22.29 GB (67%), 15 MB/s       15.03 of 22.29 GB (67%), 15 MB/s       15.17 of 22.29 GB (68%), 15 MB/s       15.30 of 22.29 GB (69%), 15 MB/s       15.44 of 22.29 GB (69%), 15 MB/s       15.57 of 22.29 GB (70%), 15 MB/s       15.70 of 22.29 GB (70%), 15 MB/s       15.84 of 22.29 GB (71%), 15 MB/s       15.97 of 22.29 GB (72%), 15 MB/s       16.11 of 22.29 GB (72%), 15 MB/s       16.24 of 22.29 GB (73%), 15 MB/s       16.37 of 22.29 GB (73%), 15 MB/s       16.51 of 22.29 GB (74%), 15 MB/s       16.64 of 22.29 GB (75%), 15 MB/s       16.78 of 22.29 GB (75%), 15 MB/s       16.91 of 22.29 GB (76%), 15 MB/s       17.05 of 22.29 GB (76%), 15 MB/s       17.18 of 22.29 GB (77%), 15 MB/s       17.31 of 22.29 GB (78%), 15 MB/s       17.45 of 22.29 GB (78%), 15 MB/s       17.58 of 22.29 GB (79%), 15 MB/s       17.72 of 22.29 GB (79%), 15 MB/s       17.85 of 22.29 GB (80%), 15 MB/s       17.99 of 22.29 GB (81%), 15 MB/s       18.12 of 22.29 GB (81%), 15 MB/s       18.25 of 22.29 GB (82%), 15 MB/s       18.39 of 22.29 GB (83%), 15 MB/s       18.52 of 22.29 GB (83%), 15 MB/s       18.66 of 22.29 GB (84%), 15 MB/s       18.79 of 22.29 GB (84%), 15 MB/s       18.92 of 22.29 GB (85%), 15 MB/s       19.06 of 22.29 GB (86%), 15 MB/s       19.19 of 22.29 GB (86%), 15 MB/s       19.33 of 22.29 GB (87%), 15 MB/s       19.46 of 22.29 GB (87%), 15 MB/s       19.60 of 22.29 GB (88%), 15 MB/s       19.73 of 22.29 GB (89%), 15 MB/s       19.86 of 22.29 GB (89%), 15 MB/s       20.00 of 22.29 GB (90%), 15 MB/s       20.13 of 22.29 GB (90%), 15 MB/s       20.27 of 22.29 GB (91%), 15 MB/s       20.40 of 22.29 GB (92%), 15 MB/s       20.54 of 22.29 GB (92%), 15 MB/s       20.67 of 22.29 GB (93%), 15 MB/s       20.80 of 22.29 GB (93%), 15 MB/s       20.94 of 22.29 GB (94%), 15 MB/s       21.07 of 22.29 GB (95%), 15 MB/s       21.21 of 22.29 GB (95%), 15 MB/s       21.34 of 22.29 GB (96%), 15 MB/s       21.47 of 22.29 GB (96%), 15 MB/s       21.61 of 22.29 GB (97%), 15 MB/s       21.74 of 22.29 GB (98%), 15 MB/s       21.88 of 22.29 GB (98%), 15 MB/s       22.01 of 22.29 GB (99%), 15 MB/s       22.15 of 22.29 GB (99%), 15 MB/s       22.28 of 22.29 GB (100%), 15 MB/s       22.29 of 22.29 GB (100%), 15 MB/s    
+   SHA-256 checked against MODELS.md
+
+Ready: ~/janas/models/qwen3.6-35b-a3b-q4km.jns
+Chat with it: janas-chat qwen3.6-35b-a3b
+   checking the answers (temperature 0)
+   checking that the machine is free to be measured (5 s)...
+   measuring the speed (janas-bench, 3 rounds): minutes on quick, longer on the others
+
+== The report (~/janas/janas-try/janas-try-report.md)
+
+## Janas test report
+
+- Janas commit: `faae71d`
+- Levels: medium
+- Model (medium): Qwen3.6-35B-A3B, run as `qwen3.6-35b-a3b-q4km.jns` - Janas's format (JNS), converted here by gguf2jns and jns_planes from `Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf` of `bartowski/Qwen_Qwen3.6-35B-A3B-GGUF`; the SHA-256 of every file checked against MODELS.md by janas-get
+- CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (8 threads; avx2)
+- Memory: 15.5 GiB
+- Disk: SK hynix PC711 HFS512GDE9X073N
+- System: Arch Linux, Linux 7.2.11-arch1-1
+- Compiler: gcc (GCC) 16.2.1 20260810
+- GPU seen by Vulkan: vulkaninfo not installed; Janas built with GPU support
+- Power: mains
+- Load when it started: 3.76 over 8 threads (the speed lines below say how idle the CPU was before each measurement)
+
+### Results
+
+```
+medium answer fingerprint ok (13e2f198c270b826)
+medium speed measured with the CPU 99% idle before (load 2.71 over 8 threads; idle)
+```
+
+### bench-medium
+
+```
+janas-bench v2026.10.30.1, 20261101-010127
+system:  Linux 7.2.11-arch1-1 x86_64
+CPU:     Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (4 performance cores, 8 threads on them, 8 usable in all)
+memory:  15.5 GiB, 14.4 GiB available; power: mains
+GPU:     none usable: turned off by JANAS_GPU=0
+NPU:     none usable: no Level Zero loader (libze_loader.so.1)
+model:   Qwen3.6 35B A3B (qwen35moe), context 4096 tokens, expert cache 9.3 GiB, up to 8 compute threads, no GPU (turned off by JANAS_GPU=0), drafts from the MTP block, down matrix at 4 bits (memory)
+test:    prompt 256 tokens of prose (not repeated), 64 generated tokens, greedy;
+         with MTP drafts: a chat reply of as many tokens, greedy and sampled
+         as the chat samples (temperature 0.7, top-k 20, top-p 0.8), no reasoning
+
+warming up the expert cache...
+measuring 2 configurations, 3 rounds...
+
+configuration               prefill       decode   MTP greedy  MTP sampled     cache
+8 threads                  30.9 tok/s    6.0 tok/s   10.0 tok/s    9.5 tok/s     91.7%
+4 threads                  30.9 tok/s    6.4 tok/s   10.1 tok/s   10.0 tok/s     90.1%
+
+result:  prefill 30.9 tok/s, decode 6.4 tok/s, with MTP 10.0 tok/s greedy, 9.5 tok/s sampled
+         (the configuration the engine chose for each kind of pass, as it runs in a chat)
+MTP:     drafts kept 78% greedy, 75% sampled (all configurations)
+choices: mode max; one token: 4 threads (153.3 ms/token); 2-16 tokens: 8 threads (65.6 ms/token); 17-63 tokens: 8 threads (39.5 ms/token); blocks: 4 threads (28.7 ms/token)
+```
+
+./tools/janas-try.sh: line 98: /dev/tty: No such device or address
+   not sent; the report stays in ~/janas/janas-try/janas-try-report.md
+
+== Done. Thank you for trying Janas.

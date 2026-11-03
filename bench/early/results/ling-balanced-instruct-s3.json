@@ -1,0 +1,142 @@
+[
+  {
+    "model": "ling-balanced",
+    "mode": "instruct",
+    "task": "intervals",
+    "seconds": 10.032265023999571,
+    "first_token_seconds": 1.6523605700003827,
+    "first_answer_seconds": 1.652361528000256,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    for current in sorted_intervals[1:]:\n        if current[0] <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))\n        else:\n            merged.append(current)\n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 118,
+      "prompt_tokens": 77,
+      "total_tokens": 195,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 77,
+      "prompt_ms": 1642.505,
+      "prompt_per_token_ms": 21.33123376623377,
+      "prompt_per_second": 46.8796137606887,
+      "predicted_n": 118,
+      "predicted_ms": 8379.9,
+      "predicted_per_token_ms": 71.62307692307692,
+      "predicted_per_second": 13.961980453227365
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    for current in sorted_intervals[1:]:\n        if current[0] <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], current[1]))\n        else:\n            merged.append(current)\n    return merged\n"
+    }
+  },
+  {
+    "model": "ling-balanced",
+    "mode": "instruct",
+    "task": "toposort",
+    "seconds": 18.98108804900039,
+    "first_token_seconds": 1.7255739599986555,
+    "first_answer_seconds": 1.7255750019994593,
+    "content": "```python\ndef topo_sort(graph):\n    in_degree = {}\n    for node in graph:\n        in_degree.setdefault(node, 0)\n        for prereq in graph[node]:\n            in_degree.setdefault(prereq, 0)\n            in_degree[prereq] += 1\n\n    # Find all nodes that have in-degree 0 (no prerequisites)\n    ready = [n for n in in_degree if in_degree[n] == 0]\n    ready.sort()\n    result = []\n\n    while ready:\n        node = ready.pop(0)\n        result.append(node)\n\n        # For each node that depends on `node`, reduce its in-degree\n        for other in in_degree:\n            if node in graph.get(other, []):\n                in_degree[other] -= 1\n                if in_degree[other] == 0:\n                    ready.append(other)\n                    ready.sort()\n\n    if len(result) != len(in_degree):\n        raise ValueError(\"Cycle detected\")\n\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 240,
+      "prompt_tokens": 89,
+      "total_tokens": 329,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 89,
+      "prompt_ms": 1705.647,
+      "prompt_per_token_ms": 19.164573033707864,
+      "prompt_per_second": 52.17961278037014,
+      "predicted_n": 240,
+      "predicted_ms": 17255.365,
+      "predicted_per_token_ms": 72.198179916318,
+      "predicted_per_second": 13.850764675218402
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 34, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 30, in topo_sort\n    raise ValueError(\"Cycle detected\")\nValueError: Cycle detected\n",
+      "code": "def topo_sort(graph):\n    in_degree = {}\n    for node in graph:\n        in_degree.setdefault(node, 0)\n        for prereq in graph[node]:\n            in_degree.setdefault(prereq, 0)\n            in_degree[prereq] += 1\n\n    # Find all nodes that have in-degree 0 (no prerequisites)\n    ready = [n for n in in_degree if in_degree[n] == 0]\n    ready.sort()\n    result = []\n\n    while ready:\n        node = ready.pop(0)\n        result.append(node)\n\n        # For each node that depends on `node`, reduce its in-degree\n        for other in in_degree:\n            if node in graph.get(other, []):\n                in_degree[other] -= 1\n                if in_degree[other] == 0:\n                    ready.append(other)\n                    ready.sort()\n\n    if len(result) != len(in_degree):\n        raise ValueError(\"Cycle detected\")\n\n    return result\n"
+    }
+  },
+  {
+    "model": "ling-balanced",
+    "mode": "instruct",
+    "task": "window",
+    "seconds": 8.693975317000877,
+    "first_token_seconds": 1.477381590000732,
+    "first_answer_seconds": 1.4773820919999707,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 102,
+      "prompt_tokens": 76,
+      "total_tokens": 178,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 1458.713,
+      "prompt_per_token_ms": 19.193592105263157,
+      "prompt_per_second": 52.100721663548626,
+      "predicted_n": 102,
+      "predicted_ms": 7216.477,
+      "predicted_per_token_ms": 71.45026732673267,
+      "predicted_per_second": 13.995748895201912
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n"
+    }
+  },
+  {
+    "model": "ling-balanced",
+    "mode": "instruct",
+    "task": "security",
+    "seconds": 12.08639554599904,
+    "first_token_seconds": 2.2209258530001534,
+    "first_answer_seconds": 2.2209261499992863,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        addr = ipaddress.IPv4Address(text)\n    except (ValueError, ipaddress.AddressValueError):\n        return False\n    if addr in ipaddress.IPv4Network('10.0.0.0/8'):\n        return True\n    if addr in ipaddress.IPv4Network('172.16.0.0/12'):\n        return True\n    if addr in ipaddress.IPv4Network('192.168.0.0/16'):\n        return True\n    return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 143,
+      "prompt_tokens": 130,
+      "total_tokens": 273,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 130,
+      "prompt_ms": 2202.503,
+      "prompt_per_token_ms": 16.94233076923077,
+      "prompt_per_second": 59.02375615379411,
+      "predicted_n": 143,
+      "predicted_ms": 9865.381,
+      "predicted_per_token_ms": 69.47451408450704,
+      "predicted_per_second": 14.3937674581448
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        addr = ipaddress.IPv4Address(text)\n    except (ValueError, ipaddress.AddressValueError):\n        return False\n    if addr in ipaddress.IPv4Network('10.0.0.0/8'):\n        return True\n    if addr in ipaddress.IPv4Network('172.16.0.0/12'):\n        return True\n    if addr in ipaddress.IPv4Network('192.168.0.0/16'):\n        return True\n    return False\n"
+    }
+  }
+]

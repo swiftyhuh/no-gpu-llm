@@ -1,0 +1,7 @@
+model:   Huihui Ornith 1.5 35B A3B Abliterated (qwen35moe), context 4096 tokens, expert cache 5.0 GiB, up to 8 compute threads, no GPU (turned off by 
+         with MTP drafts: a chat reply of as many tokens, greedy and sampled
+configuration               prefill       decode   MTP greedy  MTP sampled     cache
+8 threads                  28.4 tok/s    4.4 tok/s    6.5 tok/s    6.5 tok/s     83.2%
+4 threads                  27.7 tok/s    4.8 tok/s    7.0 tok/s    7.1 tok/s     83.6%
+result:  prefill 28.4 tok/s, decode 4.8 tok/s, with MTP 7.0 tok/s greedy, 7.1 tok/s sampled
+MTP:     drafts kept 63% greedy, 67% sampled (all configurations)

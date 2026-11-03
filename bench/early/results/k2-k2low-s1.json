@@ -1,0 +1,142 @@
+[
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "intervals",
+    "seconds": 25.667056795000462,
+    "first_token_seconds": 1.9871160830007284,
+    "first_answer_seconds": 1.9871184250005172,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Create a copy to avoid mutating the input\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    \n    merged = [list(sorted_intervals[0])]\n    \n    for start, end in sorted_intervals[1:]:\n        last_end = merged[-1][1]\n        if start <= last_end:  # Overlapping or touching intervals\n            merged[-1][1] = max(last_end, end)\n        else:\n            merged.append([start, end])\n    \n    return [tuple(interval) for interval in merged]\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 64,
+      "total_tokens": 198,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 64,
+      "prompt_ms": 1816.632,
+      "prompt_per_token_ms": 28.384875,
+      "prompt_per_second": 35.230030077638176,
+      "predicted_n": 134,
+      "predicted_ms": 23848.081,
+      "predicted_per_token_ms": 179.3088796992481,
+      "predicted_per_second": 5.576968645821021
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Create a copy to avoid mutating the input\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    \n    merged = [list(sorted_intervals[0])]\n    \n    for start, end in sorted_intervals[1:]:\n        last_end = merged[-1][1]\n        if start <= last_end:  # Overlapping or touching intervals\n            merged[-1][1] = max(last_end, end)\n        else:\n            merged.append([start, end])\n    \n    return [tuple(interval) for interval in merged]\n"
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "toposort",
+    "seconds": 39.7683065300007,
+    "first_token_seconds": 3.0016120849995787,
+    "first_answer_seconds": 3.001614291999431,
+    "content": "```python\ndef topo_sort(graph):\n    graph = dict(graph)\n    all_nodes = set(graph.keys())\n    for nodes in graph.values():\n        all_nodes.update(nodes)\n    \n    indegree = {node: 0 for node in all_nodes}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            indegree[prereq] = indegree.get(prereq, 0) + 1\n    \n    ready = {node for node, deg in indegree.items() if deg == 0}\n    result = []\n    \n    while ready:\n        node = min(ready)\n        result.append(node)\n        ready.remove(node)\n        \n        for dependent, deps in graph.items():\n            if node in deps:\n                indegree[dependent] -= 1\n                if indegree[dependent] == 0:\n                    ready.add(dependent)\n    \n    if len(result) != len(all_nodes):\n        raise ValueError(\"Graph contains a cycle\")\n    \n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 209,
+      "prompt_tokens": 76,
+      "total_tokens": 285,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 2813.268,
+      "prompt_per_token_ms": 37.016684210526314,
+      "prompt_per_second": 27.01484536844694,
+      "predicted_n": 209,
+      "predicted_ms": 36943.48,
+      "predicted_per_token_ms": 177.61288461538464,
+      "predicted_per_second": 5.630222166401216
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 34, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 30, in topo_sort\n    raise ValueError(\"Graph contains a cycle\")\nValueError: Graph contains a cycle\n",
+      "code": "def topo_sort(graph):\n    graph = dict(graph)\n    all_nodes = set(graph.keys())\n    for nodes in graph.values():\n        all_nodes.update(nodes)\n    \n    indegree = {node: 0 for node in all_nodes}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            indegree[prereq] = indegree.get(prereq, 0) + 1\n    \n    ready = {node for node, deg in indegree.items() if deg == 0}\n    result = []\n    \n    while ready:\n        node = min(ready)\n        result.append(node)\n        ready.remove(node)\n        \n        for dependent, deps in graph.items():\n            if node in deps:\n                indegree[dependent] -= 1\n                if indegree[dependent] == 0:\n                    ready.add(dependent)\n    \n    if len(result) != len(all_nodes):\n        raise ValueError(\"Graph contains a cycle\")\n    \n    return result\n"
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "window",
+    "seconds": 21.17869533799967,
+    "first_token_seconds": 2.628475661000266,
+    "first_answer_seconds": 2.6284762659997796,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(1, len(nums) - k + 1):\n        window_sum = window_sum - nums[i - 1] + nums[i + k - 1]\n        result.append(window_sum)\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 107,
+      "prompt_tokens": 64,
+      "total_tokens": 171,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 64,
+      "prompt_ms": 2442.049,
+      "prompt_per_token_ms": 38.157015625,
+      "prompt_per_second": 26.20750034090225,
+      "predicted_n": 107,
+      "predicted_ms": 18721.163,
+      "predicted_per_token_ms": 176.61474528301886,
+      "predicted_per_second": 5.662041402021872
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(1, len(nums) - k + 1):\n        window_sum = window_sum - nums[i - 1] + nums[i + k - 1]\n        result.append(window_sum)\n    return result\n"
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2low",
+    "task": "security",
+    "seconds": 20.226521022999805,
+    "first_token_seconds": 4.402889852000953,
+    "first_answer_seconds": 4.402890422999917,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n    except ValueError:\n        return False\n    if not isinstance(ip, ipaddress.IPv4Address):\n        return False\n    if ip.is_private or ip.is_loopback or ip.is_link_local:\n        return False\n    if ip.is_private:\n        return True\n    return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 88,
+      "prompt_tokens": 106,
+      "total_tokens": 194,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 106,
+      "prompt_ms": 4204.765,
+      "prompt_per_token_ms": 39.667594339622646,
+      "prompt_per_second": 25.20949446639705,
+      "predicted_n": 88,
+      "predicted_ms": 16010.566,
+      "predicted_per_token_ms": 184.02949425287358,
+      "predicted_per_second": 5.4339115806399345
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 19, in <module>\n    for x in ['10.0.0.0','10.255.255.255','172.16.0.0','172.31.255.255','192.168.1.2']: assert is_private_ipv4(x), x\n                                                                                               ~~~~~~~~~~~~~~~^^^\nAssertionError: 10.0.0.0\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n    except ValueError:\n        return False\n    if not isinstance(ip, ipaddress.IPv4Address):\n        return False\n    if ip.is_private or ip.is_loopback or ip.is_link_local:\n        return False\n    if ip.is_private:\n        return True\n    return False\n"
+    }
+  }
+]

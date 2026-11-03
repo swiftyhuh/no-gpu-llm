@@ -1,0 +1,63 @@
+{
+ "preset": "heretic-off",
+ "seed": 1,
+ "peak_gb": 7.38,
+ "results": [
+  {
+   "task": "c_pipe",
+   "passed": true,
+   "why": "",
+   "seconds": 47.8,
+   "first_code": 8.0,
+   "finish": "stop",
+   "tokens": 456,
+   "tok_s": 11.47,
+   "reasoning_chars": 0,
+   "content": "```c\n#include <unistd.h>\n#include <sys/wait.h>\n#include <errno.h>\n\nint sum_in_child(const int *values, int n, long *result) {\n    int pipefd[2];\n    if (pipe(pipefd) == -1) {\n        return -1;\n    }\n\n    pid_t pid = fork();\n    if (pid == -1) {\n        close(pipefd[0]);\n        close(pipefd[1]);\n        return -1;\n    }\n\n    if (pid == 0) {\n        /* Child process */\n        close(pipefd[0]); /* Close read end */\n\n        long sum = 0;\n        for (int i = 0; i < n; i++) {\n            sum += values[i];\n        }\n\n        /* Write the sum to the pipe */\n        ssize_t bytes_written = write(pipefd[1], &sum, sizeof(long));\n        if (bytes_written != sizeof(long)) {\n            close(pipefd[1]);\n            _exit(1);\n        }\n\n        close(pipefd[1]);\n        _exit(0);\n    }\n\n    /* Parent process */\n    close(pipefd[1]); /* Close write end */\n\n    /* Read the sum from the pipe */\n    ssize_t bytes_read = read(pipefd[0], result, sizeof(long));\n    if (bytes_read != sizeof(long)) {\n        close(pipefd[0]);\n        /* Wait for child to clean up */\n        int status;\n        waitpid(pid, &status, 0);\n        return -1;\n    }\n\n    close(pipefd[0]);\n\n    /* Wait for child to finish */\n    int status;\n    if (waitpid(pid, &status, 0) == -1) {\n        return -1;\n    }\n\n    /* Check if child exited with status 0 */\n    if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {\n        return -1;\n    }\n\n    return 0;\n}\n```",
+   "reasoning": "",
+   "attempts": 1
+  },
+  {
+   "task": "prolog_lists",
+   "passed": false,
+   "why": "e_dups([1,2,1,3,2,4],[1,2,3,4])\nWarning: [Thread main] /w/test.pl:3: main\nWarning: [Thread main]   Initialization goal called halt(1).\nWarning: [Thread main]   The program entry point should be called using initialization/2.\nWarning: [Thread main]   Consider using library(main).\n",
+   "seconds": 33.7,
+   "first_code": 5.4,
+   "finish": "stop",
+   "tokens": 331,
+   "tok_s": 11.67,
+   "reasoning_chars": 0,
+   "content": "```prolog\n% remove_dups(+List, -Result)\nremove_dups([], []).\nremove_dups([H|T], [H|Result]) :-\n    remove_dups(T, Temp),\n    not_member(H, Temp),\n    Result = Temp.\nremove_dups([H|T], Result) :-\n    member(H, T),\n    remove_dups(T, Result).\n\nnot_member(_, []).\nnot_member(X, [Y|Ys]) :-\n    X \\= Y,\n    not_member(X, Ys).\n\n% insert_sorted(+X, +Sorted, -Result)\ninsert_sorted(X, [], [X]).\ninsert_sorted(X, [H|T], [X, H|T]) :-\n    X =< H.\ninsert_sorted(X, [H|T], [H|R]) :-\n    X > H,\n    insert_sorted(X, T, R).\n\n% subset_sum(+List, +Sum, -Subset)\nsubset_sum(List, Sum, Subset) :-\n    subset_sum_helper(List, Sum, [], Subset).\n\nsubset_sum_helper([], 0, Acc, Acc).\nsubset_sum_helper([], _, _, _).\nsubset_sum_helper([H|T], Sum, Acc, Subset) :-\n    Sum >= H,\n    NewSum is Sum - H,\n    subset_sum_helper(T, NewSum, [H|Acc], Subset).\nsubset_sum_helper([_|T], Sum, Acc, Subset) :-\n    subset_sum_helper(T, Sum, Acc, Subset).\n```",
+   "reasoning": "",
+   "attempts": 1
+  },
+  {
+   "task": "java_streams",
+   "passed": true,
+   "why": "",
+   "seconds": 40.3,
+   "first_code": 7.0,
+   "finish": "stop",
+   "tokens": 375,
+   "tok_s": 11.26,
+   "reasoning_chars": 0,
+   "content": "```java\nimport java.util.*;\nimport java.util.stream.*;\n\npublic class Report {\n\n    public record Student(String name, String group, java.util.List<Integer> grades) {}\n\n    public static java.util.Map<String, Double> averageByGroup(java.util.List<Student> students) {\n        return students.stream()\n                .filter(s -> s.grades() != null && !s.grades().isEmpty())\n                .collect(Collectors.groupingBy(\n                        Student::group,\n                        Collectors.averagingDouble(s -> s.grades().stream()\n                                .mapToInt(Integer::intValue)\n                                .average()\n                                .orElse(0.0))\n                ));\n    }\n\n    public static java.util.List<String> topStudents(java.util.List<Student> students, int n) {\n        return students.stream()\n                .filter(s -> s.grades() != null && !s.grades().isEmpty())\n                .sorted(Comparator.comparing((Student s) -> s.grades().stream()\n                                .mapToInt(Integer::intValue)\n                                .average()\n                                .orElse(0.0), Comparator.reverseOrder())\n                        .thenComparing(Student::name))\n                .limit(n)\n                .map(Student::name)\n                .collect(Collectors.toList());\n    }\n\n    public static java.util.Optional<Student> best(java.util.List<Student> students, String group) {\n        return students.stream()\n                .filter(s -> group.equals(s.group()) && s.grades() != null && !s.grades().isEmpty())\n                .max(Comparator.comparingDouble(s -> s.grades().stream()\n                        .mapToInt(Integer::intValue)\n                        .average()\n                        .orElse(0.0)));\n    }\n}\n```",
+   "reasoning": "",
+   "attempts": 1
+  },
+  {
+   "task": "cpp_oop",
+   "passed": false,
+   "why": "compile: sol.hpp:132:32: error: \u2018std::vector<std::unique_ptr<Shape> > Scene::shapes_\u2019 is private within this context",
+   "seconds": 110.3,
+   "first_code": 10.7,
+   "finish": "stop",
+   "tokens": 1033,
+   "tok_s": 10.37,
+   "reasoning_chars": 0,
+   "content": "```cpp\n#ifndef SHAPE_H\n#define SHAPE_H\n\n#include <memory>\n#include <string>\n#include <vector>\n#include <cmath>\n#include <algorithm>\n#include <iomanip>\n#include <sstream>\n#include <stdexcept>\n#include <iostream>\n\nclass Shape {\npublic:\n    virtual ~Shape() = default;\n    virtual double area() const = 0;\n    virtual std::string name() const = 0;\n    virtual std::unique_ptr<Shape> clone() const = 0;\n};\n\nclass Circle : public Shape {\nprivate:\n    double r_;\n    static constexpr double pi = 3.14159265358979;\npublic:\n    explicit Circle(double r) : r_(r) {\n        if (r <= 0) {\n            throw std::invalid_argument(\"Radius must be positive\");\n        }\n    }\n    double area() const override {\n        return pi * r_ * r_;\n    }\n    std::string name() const override {\n        return \"circle\";\n    }\n    std::unique_ptr<Shape> clone() const override {\n        return std::make_unique<Circle>(*this);\n    }\n};\n\nclass Rect : public Shape {\nprivate:\n    double w_;\n    double h_;\npublic:\n    Rect(double w, double h) : w_(w), h_(h) {\n        if (w <= 0 || h <= 0) {\n            throw std::invalid_argument(\"Width and height must be positive\");\n        }\n    }\n    double area() const override {\n        return w_ * h_;\n    }\n    std::string name() const override {\n        return \"rect\";\n    }\n    std::unique_ptr<Shape> clone() const override {\n        return std::make_unique<Rect>(*this);\n    }\n};\n\nclass Scene {\nprivate:\n    std::vector<std::unique_ptr<Shape>> shapes_;\n\npublic:\n    Scene() = default;\n\n    Scene(const Scene& other) {\n        for (const auto& s : other.shapes_) {\n            shapes_.push_back(s->clone());\n        }\n    }\n\n    Scene& operator=(const Scene& other) {\n        if (this != &other) {\n            shapes_.clear();\n            for (const auto& s : other.shapes_) {\n                shapes_.push_back(s->clone());\n            }\n        }\n        return *this;\n    }\n\n    void add(std::unique_ptr<Shape> s) {\n        if (!s) {\n            throw std::invalid_argument(\"Shape cannot be nullptr\");\n        }\n        shapes_.push_back(std::move(s));\n    }\n\n    std::size_t size() const {\n        return shapes_.size();\n    }\n\n    double total_area() const {\n        double total = 0.0;\n        for (const auto& s : shapes_) {\n            total += s->area();\n        }\n        return total;\n    }\n\n    std::string largest() const {\n        if (shapes_.empty()) {\n            throw std::runtime_error(\"Scene is empty\");\n        }\n        const Shape* largest_shape = shapes_[0].get();\n        for (std::size_t i = 1; i < shapes_.size(); ++i) {\n            if (shapes_[i]->area() > largest_shape->area()) {\n                largest_shape = shapes_[i].get();\n            }\n        }\n        return largest_shape->name();\n    }\n};\n\nstd::ostream& operator<<(std::ostream& os, const Scene& scene) {\n    if (scene.size() == 0) {\n        return os;\n    }\n\n    struct ShapeInfo {\n        std::string name;\n        double area;\n    };\n\n    std::vector<ShapeInfo> info_list;\n    info_list.reserve(scene.size());\n    for (const auto& s : scene.shapes_) {\n        info_list.push_back({s->name(), s->area()});\n    }\n\n    std::sort(info_list.begin(), info_list.end(),\n              [](const ShapeInfo& a, const ShapeInfo& b) {\n                  return a.area < b.area;\n              });\n\n    os << std::fixed << std::setprecision(2);\n    for (std::size_t i = 0; i < info_list.size(); ++i) {\n        if (i > 0) {\n            os << \" \";\n        }\n        os << info_list[i].name << \":\" << info_list[i].area;\n    }\n\n    return os;\n}\n\n#endif\n```",
+   "reasoning": "",
+   "attempts": 1
+  }
+ ]
+}

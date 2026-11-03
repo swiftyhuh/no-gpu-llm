@@ -1,0 +1,142 @@
+[
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "intervals",
+    "seconds": 26.34900705400105,
+    "first_token_seconds": 3.6734319339993817,
+    "first_answer_seconds": 3.6734328149996145,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Sort by start time\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    \n    merged = [sorted_intervals[0]]\n    \n    for interval in sorted_intervals[1:]:\n        last_interval = merged[-1]\n        \n        # If current interval starts before or at end of previous interval, merge\n        if interval[0] <= last_interval[1]:\n            # Update end of last interval\n            merged[-1] = (last_interval[0], max(last_interval[1], interval[1]))\n        else:\n            # No overlap, add current interval\n            merged.append(interval)\n    \n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 152,
+      "prompt_tokens": 62,
+      "total_tokens": 214,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 62,
+      "prompt_ms": 3663.825,
+      "prompt_per_token_ms": 59.093951612903226,
+      "prompt_per_second": 16.922205618445204,
+      "predicted_n": 152,
+      "predicted_ms": 22675.536,
+      "predicted_per_token_ms": 150.16911258278145,
+      "predicted_per_second": 6.6591590161308645
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Sort by start time\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    \n    merged = [sorted_intervals[0]]\n    \n    for interval in sorted_intervals[1:]:\n        last_interval = merged[-1]\n        \n        # If current interval starts before or at end of previous interval, merge\n        if interval[0] <= last_interval[1]:\n            # Update end of last interval\n            merged[-1] = (last_interval[0], max(last_interval[1], interval[1]))\n        else:\n            # No overlap, add current interval\n            merged.append(interval)\n    \n    return merged\n"
+    }
+  },
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "toposort",
+    "seconds": 58.29801986500024,
+    "first_token_seconds": 3.875639328000034,
+    "first_answer_seconds": 3.8756403930001397,
+    "content": "```python\ndef topo_sort(graph):\n    # Build reverse graph for incoming edges\n    incoming_edges = {}\n    all_nodes = set()\n    \n    # Collect all nodes and build incoming edges\n    for node, prereqs in graph.items():\n        all_nodes.add(node)\n        for prereq in prereqs:\n            all_nodes.add(prereq)\n            if prereq not in incoming_edges:\n                incoming_edges[prereq] = []\n            incoming_edges[prereq].append(node)\n    \n    # Build in-degree count for each node\n    in_degree = {node: 0 for node in all_nodes}\n    for node in all_nodes:\n        for prereq in graph.get(node, []):\n            in_degree[node] += 1\n    \n    # Find nodes with no prerequisites (in-degree = 0)\n    queue = []\n    for node in all_nodes:\n        if in_degree[node] == 0:\n            queue.append(node)\n    queue.sort()  # Sort lexicographically to ensure smallest first if multiple\n    \n    result = []\n    while queue:\n        # Pop smallest lexicographically from queue\n        node = queue.pop(0)\n        result.append(node)\n        \n        # Process neighbors (prerequisite nodes)\n        for neighbor in graph.get(node, []):\n            # Reduce in-degree of neighbors\n            in_degree[neighbor] -= 1\n            # If in-degree becomes 0, add to queue for processing\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n    \n    # Check for cycles (if result length doesn't match total nodes)\n    if len(result) != len(all_nodes):\n        raise ValueError(\"Cycle detected\")\n    \n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 352,
+      "prompt_tokens": 76,
+      "total_tokens": 428,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 3866.805,
+      "prompt_per_token_ms": 50.87901315789473,
+      "prompt_per_second": 19.654469258211883,
+      "predicted_n": 352,
+      "predicted_ms": 54422.14,
+      "predicted_per_token_ms": 155.04883190883191,
+      "predicted_per_second": 6.449580997733643
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 51, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 47, in topo_sort\n    raise ValueError(\"Cycle detected\")\nValueError: Cycle detected\n",
+      "code": "def topo_sort(graph):\n    # Build reverse graph for incoming edges\n    incoming_edges = {}\n    all_nodes = set()\n    \n    # Collect all nodes and build incoming edges\n    for node, prereqs in graph.items():\n        all_nodes.add(node)\n        for prereq in prereqs:\n            all_nodes.add(prereq)\n            if prereq not in incoming_edges:\n                incoming_edges[prereq] = []\n            incoming_edges[prereq].append(node)\n    \n    # Build in-degree count for each node\n    in_degree = {node: 0 for node in all_nodes}\n    for node in all_nodes:\n        for prereq in graph.get(node, []):\n            in_degree[node] += 1\n    \n    # Find nodes with no prerequisites (in-degree = 0)\n    queue = []\n    for node in all_nodes:\n        if in_degree[node] == 0:\n            queue.append(node)\n    queue.sort()  # Sort lexicographically to ensure smallest first if multiple\n    \n    result = []\n    while queue:\n        # Pop smallest lexicographically from queue\n        node = queue.pop(0)\n        result.append(node)\n        \n        # Process neighbors (prerequisite nodes)\n        for neighbor in graph.get(node, []):\n            # Reduce in-degree of neighbors\n            in_degree[neighbor] -= 1\n            # If in-degree becomes 0, add to queue for processing\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n    \n    # Check for cycles (if result length doesn't match total nodes)\n    if len(result) != len(all_nodes):\n        raise ValueError(\"Cycle detected\")\n    \n    return result\n"
+    }
+  },
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "window",
+    "seconds": 23.569764959998793,
+    "first_token_seconds": 3.606270759999461,
+    "first_answer_seconds": 3.606271176999144,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    \n    if k > len(nums):\n        return []\n    \n    # Calculate sum of first window\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    \n    # Slide the window and calculate sums\n    for i in range(1, len(nums) - k + 1):\n        # Remove the leftmost element and add the new element\n        window_sum = window_sum - nums[i-1] + nums[i+k-1]\n        result.append(window_sum)\n    \n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 135,
+      "prompt_tokens": 63,
+      "total_tokens": 198,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 63,
+      "prompt_ms": 3577.635,
+      "prompt_per_token_ms": 56.78785714285715,
+      "prompt_per_second": 17.60939838748223,
+      "predicted_n": 135,
+      "predicted_ms": 19963.374,
+      "predicted_per_token_ms": 148.98040298507462,
+      "predicted_per_second": 6.712292220743849
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    \n    if k > len(nums):\n        return []\n    \n    # Calculate sum of first window\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    \n    # Slide the window and calculate sums\n    for i in range(1, len(nums) - k + 1):\n        # Remove the leftmost element and add the new element\n        window_sum = window_sum - nums[i-1] + nums[i+k-1]\n        result.append(window_sum)\n    \n    return result\n"
+    }
+  },
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "security",
+    "seconds": 14.75008766999963,
+    "first_token_seconds": 5.5019966769996245,
+    "first_answer_seconds": 5.501997032999498,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        if isinstance(ip, ipaddress.IPv4Address):\n            return ip.is_private and ip.version == 4\n        return False\n    except:\n        return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 63,
+      "prompt_tokens": 116,
+      "total_tokens": 179,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 116,
+      "prompt_ms": 5493.225,
+      "prompt_per_token_ms": 47.355387931034485,
+      "prompt_per_second": 21.116921298508615,
+      "predicted_n": 63,
+      "predicted_ms": 9248.014,
+      "predicted_per_token_ms": 149.16151612903224,
+      "predicted_per_second": 6.7041421001309045
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 16, in <module>\n    for x in ['172.15.1.1','172.32.0.0','192.169.0.0','127.0.0.1','169.254.1.1','0.0.0.0','100.64.0.1','8.8.8.8','::1','::ffff:10.1.1.1','bad','10.1.2.999','10.1.2.3/24']: assert not is_private_ipv4(x), x\n                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 127.0.0.1\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        if isinstance(ip, ipaddress.IPv4Address):\n            return ip.is_private and ip.version == 4\n        return False\n    except:\n        return False\n"
+    }
+  }
+]

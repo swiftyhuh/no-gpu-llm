@@ -1,0 +1,126 @@
+[
+  {
+    "model": "vibethinker",
+    "mode": "native128",
+    "task": "intervals",
+    "seconds": 107.63209687699964,
+    "first_token_seconds": 2.4322984489999726,
+    "first_answer_seconds": null,
+    "content": "<think>The user asks: \"Implement merge_intervals(intervals) in Python. Input is a list of (start,end) integer pairs, start<=end. Return sorted merged tuples, merging touching intervals too. Do not mutate input. Handle empty input. Return only one code block, no explanation.\"\n\nWe need to output a single code block containing the implementation. The function merge_intervals(intervals) should take a list of tuples (or maybe list of lists) representing intervals, each with start <= end. Should not mutate input. Should return sorted merged tuples, merging overlapping or touching intervals (i.e., if intervals [1,3] and [3,5] should merge to [1,5] because they touch at a point). The output should be sorted (presumably by start). Should handle empty input (return empty list). Implementation in Python.\n\nWe need to produce a single code block with the solution. Should we include any imports? Probably not needed. Provide function definition and maybe a test? The instruction: \"Return only one Python code block, no explanation.\" So we need to output something like:\n\n```python\ndef merge_intervals(intervals):\n    \"\"\"\n    Merge overlapping or touching intervals and return a sorted list of merged intervals.\n    ...\n    \"\"\"\n    if not intervals:\n        return []\n    # Convert to sorted list of tuples (start, end)\n    sorted_intervals = sorted((int(a, s) for s, a in intervals), key=lambda x: (x[0], x[1]))\n    # Actually we can just sort intervals directly.\n    # But ensure they are tuples.\n    intervals = [tuple(interval) for interval in sorted_intervals]\n    merged = []\n    for start, end in intervals:\n        if not merged or start <= merged[-1][1] + 0:  # but need to merge touching intervals: start <= merged[-1][1] (if touching allowed? Actually touching means start == merged[-1][1] also merge)\n        # So condition: if start <= merged[-1][1] + ??? Actually if intervals are inclusive, touching means start <= merged[-1][1] + 0? For integer intervals, [1,3] and [3,5] have start=3, previous end=3, they touch. So condition start <= merged[-1][1] + 0? That's start <= merged[-1][1] + ??? Actually we want start <= merged[-1][1] + 0? That's start <= merged[-1][1] + 0 => start <= merged[-1][1], which merges overlapping and touching at same endpoint. But if intervals are inclusive, [1,3] and [4,5] are not touching (gap of 1). So condition start <= merged[-1][1] + 1? Wait, \"touching intervals too\" means intervals that directly abut each other: e.g., [1,3] and [3,5] share endpoint 3. So they should be merged. So condition: if start <= merged[-1][1] (since start=3 <= 3). That merges overlapping and touching. However if intervals are like [1,2] and [3,4], start=3 > 2, not merging. So condition is start <= merged[-1][1] + ??? Actually if intervals are inclusive, touching means start == previous end. So condition start <= merged[-1][1] (including equality). So correct.\n\n        # So we can use if not merged or start <= merged[-1][1]:\n        # then extend previous interval's end = max(merged[-1][1], end)\n        # else: append new interval.\n    return merged\n```\n\nBut",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 768,
+      "prompt_tokens": 73
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 73,
+      "prompt_ms": 2430.403,
+      "prompt_per_token_ms": 33.293191780821914,
+      "prompt_per_second": 30.036170956010178,
+      "predicted_n": 768,
+      "predicted_ms": 105199.542,
+      "predicted_per_token_ms": 137.15716036505867,
+      "predicted_per_second": 7.290906266493062
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "expected an indented block after 'if' statement on line 15 (<unknown>, line 21)",
+      "code": "def merge_intervals(intervals):\n    \"\"\"\n    Merge overlapping or touching intervals and return a sorted list of merged intervals.\n    ...\n    \"\"\"\n    if not intervals:\n        return []\n    # Convert to sorted list of tuples (start, end)\n    sorted_intervals = sorted((int(a, s) for s, a in intervals), key=lambda x: (x[0], x[1]))\n    # Actually we can just sort intervals directly.\n    # But ensure they are tuples.\n    intervals = [tuple(interval) for interval in sorted_intervals]\n    merged = []\n    for start, end in intervals:\n        if not merged or start <= merged[-1][1] + 0:  # but need to merge touching intervals: start <= merged[-1][1] (if touching allowed? Actually touching means start == merged[-1][1] also merge)\n        # So condition: if start <= merged[-1][1] + ??? Actually if intervals are inclusive, touching means start <= merged[-1][1] + 0? For integer intervals, [1,3] and [3,5] have start=3, previous end=3, they touch. So condition start <= merged[-1][1] + 0? That's start <= merged[-1][1] + ??? Actually we want start <= merged[-1][1] + 0? That's start <= merged[-1][1] + 0 => start <= merged[-1][1], which merges overlapping and touching at same endpoint. But if intervals are inclusive, [1,3] and [4,5] are not touching (gap of 1). So condition start <= merged[-1][1] + 1? Wait, \"touching intervals too\" means intervals that directly abut each other: e.g., [1,3] and [3,5] share endpoint 3. So they should be merged. So condition: if start <= merged[-1][1] (since start=3 <= 3). That merges overlapping and touching. However if intervals are like [1,2] and [3,4], start=3 > 2, not merging. So condition is start <= merged[-1][1] + ??? Actually if intervals are inclusive, touching means start == previous end. So condition start <= merged[-1][1] (including equality). So correct.\n\n        # So we can use if not merged or start <= merged[-1][1]:\n        # then extend previous interval's end = max(merged[-1][1], end)\n        # else: append new interval.\n    return merged\n"
+    }
+  },
+  {
+    "model": "vibethinker",
+    "mode": "native128",
+    "task": "toposort",
+    "seconds": 108.2502022839999,
+    "first_token_seconds": 2.6316512819994387,
+    "first_answer_seconds": null,
+    "content": "<think>The user asks: \"Implement topo_sort(graph) in Python. graph maps each node (string) to its prerequisite nodes. Include nodes that appear only as prerequisites. Return prerequisites before dependents. Whenever multiple nodes are ready, choose the lexicographically smallest. Raise ValueError on any cycle. Do not mutate graph. Return only one Python code block, no explanation.\"\n\nWe need to produce a single Python code block containing the implementation of topo_sort function. The graph is a mapping from each node (string) to its prerequisite nodes. That is, graph[node] = list of prerequisites (i.e., edges from prerequisite -> node). Or maybe it's the opposite? Usually topological sort given adjacency list where each node maps to its outgoing edges (i.e., node -> list of dependents). But here they say \"graph maps each node (string) to its prerequisite nodes.\" So for each node, the list contains its prerequisites. That means to compute indegree, we need to consider that edges go from prerequisite to node. So we need to compute indegree for each node, including nodes that appear only as prerequisites (so we need to collect all nodes). Then we need to perform Kahn's algorithm: start with nodes of indegree zero (no prerequisites). Among those ready, pick lexicographically smallest (string compare). Then remove them, update indegrees, add new zero indegree nodes to ready set. If at end we processed all nodes, return the order list; else cycle exists -> raise ValueError.\n\nWe must not mutate the input graph. So we should not modify its entries. Since we only need indegrees, we can compute them by iterating over graph and also over nodes that appear only as prerequisites but not as keys. So we need to collect all nodes: set of keys plus all values.\n\nImplementation details:\n\ndef topo_sort(graph):\n    # graph: dict where keys are node strings, values are list (or set) of prerequisite node strings.\n    # Return list of node strings in topological order.\n\nWe need to compute indegree dict mapping node->int.\n\nInitialize indegree dict with zero for all nodes.\n\nThen for each node, for each prereq in graph[node], indegree[prereq] not relevant? Actually indegree counts incoming edges: for node, each prerequisite contributes an incoming edge to node, so indegree[node]++ for each prerequisite? Wait: indegree is number of prerequisites a node has. So indegree[node] = len(graph[node]) (the number of prerequisites). But also we need to increment indegree for nodes that appear only as prerequisites? For those nodes, indegree will be zero unless they also appear as keys with their own prerequisites. So we need to set indegree for all nodes, not just keys.\n\nSimplify: Build set all_nodes = set(graph.keys()) | set(map(lambda x: x for x in graph.values()))? Actually need to flatten values.\n\nPseudo:\n\ndef topo_sort(graph):\n    import collections\n    # Build set of all nodes\n    all_nodes = set(graph.keys())\n    for prereqs in graph.values():\n        all_nodes.update(prereqs)\n    # Initialize indegree dict\n    indegree = {node: 0 for node in all_nodes}\n    # Compute indegree: for each node, its prerequisites increase indegree of node\n    for node, prereqs in graph.items():\n        indegree[node] = len(prereqs)\n    # Also for nodes that appear only as prerequisites but not as keys, indegree stays 0.\n    # Build ready heap (min-heap) for nodes with indegree 0\n    import heapq\n    ready = [node for node in all_nodes if indegree[node] == 0]\n    heapq.heapify(ready",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 768,
+      "prompt_tokens": 87
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 87,
+      "prompt_ms": 2605.905,
+      "prompt_per_token_ms": 29.95293103448276,
+      "prompt_per_second": 33.385714367945106,
+      "predicted_n": 768,
+      "predicted_ms": 105618.247,
+      "predicted_per_token_ms": 137.70305997392438,
+      "predicted_per_second": 7.26200274844554
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "invalid syntax (<unknown>, line 1)",
+      "code": "<think>The user asks: \"Implement topo_sort(graph) in Python. graph maps each node (string) to its prerequisite nodes. Include nodes that appear only as prerequisites. Return prerequisites before dependents. Whenever multiple nodes are ready, choose the lexicographically smallest. Raise ValueError on any cycle. Do not mutate graph. Return only one Python code block, no explanation.\"\n\nWe need to produce a single Python code block containing the implementation of topo_sort function. The graph is a mapping from each node (string) to its prerequisite nodes. That is, graph[node] = list of prerequisites (i.e., edges from prerequisite -> node). Or maybe it's the opposite? Usually topological sort given adjacency list where each node maps to its outgoing edges (i.e., node -> list of dependents). But here they say \"graph maps each node (string) to its prerequisite nodes.\" So for each node, the list contains its prerequisites. That means to compute indegree, we need to consider that edges go from prerequisite to node. So we need to compute indegree for each node, including nodes that appear only as prerequisites (so we need to collect all nodes). Then we need to perform Kahn's algorithm: start with nodes of indegree zero (no prerequisites). Among those ready, pick lexicographically smallest (string compare). Then remove them, update indegrees, add new zero indegree nodes to ready set. If at end we processed all nodes, return the order list; else cycle exists -> raise ValueError.\n\nWe must not mutate the input graph. So we should not modify its entries. Since we only need indegrees, we can compute them by iterating over graph and also over nodes that appear only as prerequisites but not as keys. So we need to collect all nodes: set of keys plus all values.\n\nImplementation details:\n\ndef topo_sort(graph):\n    # graph: dict where keys are node strings, values are list (or set) of prerequisite node strings.\n    # Return list of node strings in topological order.\n\nWe need to compute indegree dict mapping node->int.\n\nInitialize indegree dict with zero for all nodes.\n\nThen for each node, for each prereq in graph[node], indegree[prereq] not relevant? Actually indegree counts incoming edges: for node, each prerequisite contributes an incoming edge to node, so indegree[node]++ for each prerequisite? Wait: indegree is number of prerequisites a node has. So indegree[node] = len(graph[node]) (the number of prerequisites). But also we need to increment indegree for nodes that appear only as prerequisites? For those nodes, indegree will be zero unless they also appear as keys with their own prerequisites. So we need to set indegree for all nodes, not just keys.\n\nSimplify: Build set all_nodes = set(graph.keys()) | set(map(lambda x: x for x in graph.values()))? Actually need to flatten values.\n\nPseudo:\n\ndef topo_sort(graph):\n    import collections\n    # Build set of all nodes\n    all_nodes = set(graph.keys())\n    for prereqs in graph.values():\n        all_nodes.update(prereqs)\n    # Initialize indegree dict\n    indegree = {node: 0 for node in all_nodes}\n    # Compute indegree: for each node, its prerequisites increase indegree of node\n    for node, prereqs in graph.items():\n        indegree[node] = len(prereqs)\n    # Also for nodes that appear only as prerequisites but not as keys, indegree stays 0.\n    # Build ready heap (min-heap) for nodes with indegree 0\n    import heapq\n    ready = [node for node in all_nodes if indegree[node] == 0]\n    heapq.heapify(ready"
+    }
+  },
+  {
+    "model": "vibethinker",
+    "mode": "native128",
+    "task": "window",
+    "seconds": 80.31285387499975,
+    "first_token_seconds": 2.5150020049995874,
+    "first_answer_seconds": 68.28601175800031,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be a positive integer\")\n    n = len(nums)\n    if k > n:\n        return []\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    for i in range(k, n):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n```",
+    "reasoning": "<think>The user asks: \"Implement window_sums(nums,k) in Python. Return sums of each consecutive window of size k in O(n) time. Raise ValueError for k<=0. Return [] if k>len(nums). Do not mutate nums. Return only one Python code block, no explanation.\"\n\nWe need to produce a single Python code block containing the function definition that meets the specifications.\n\nWe need to ensure O(n) time using sliding window: compute sum of first k elements, then slide.\n\nRaise ValueError for k <= 0. Return [] if k > len(nums). Do not mutate nums (so we shouldn't modify input list). Use sum of slice maybe but that would be O(k) each, but we can compute initial sum and then slide.\n\nEdge cases: If k == 0 or negative: raise ValueError. If k > len(nums): return [].\n\nIf len(nums) == 0? If k==0? Already raise. If k>0 but len(nums) < k: return [].\n\nIf k == len(nums): return list with one sum equal to sum(nums). That's fine.\n\nImplementation:\n\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    n = len(nums)\n    if k > n:\n        return []\n    # compute initial sum\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    for i in range(k, n):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n\nMake sure not to mutate nums: we only read from it.\n\nReturn only one code block.\n\nThus final answer: a code block with function definition.\n\nWe need to ensure we follow the instruction: \"Return only one Python code block, no explanation.\" So we output a single code block with the function.\n\nProbably they want something like:\n\n```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be a positive integer\")\n    n = len(nums)\n    if k > n:\n        return []\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    for i in range(k, n):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n```\n\nMake sure no extra text. Provide only the code block.\n\nThus final answer.",
+    "usage": {
+      "completion_tokens": 594,
+      "prompt_tokens": 74
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 74,
+      "prompt_ms": 2501.245,
+      "prompt_per_token_ms": 33.80060810810811,
+      "prompt_per_second": 29.585266537264445,
+      "predicted_n": 594,
+      "predicted_ms": 77797.647,
+      "predicted_per_token_ms": 131.19333389544687,
+      "predicted_per_second": 7.622338500803244
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be a positive integer\")\n    n = len(nums)\n    if k > n:\n        return []\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    for i in range(k, n):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n"
+    }
+  },
+  {
+    "model": "vibethinker",
+    "mode": "native128",
+    "task": "security",
+    "seconds": 102.46198108499993,
+    "first_token_seconds": 3.656213029000355,
+    "first_answer_seconds": null,
+    "content": "<think>The user asks: \"For an authorized defensive security tool, implement is_private_ipv4(text) in Python using the standard library. Return True only for valid IPv4 addresses inside RFC1918 ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Return False for malformed input, IPv6, loopback, link-local and all other addresses. Return only one Python code block, no explanation.\"\n\nThus we need to output a single Python code block containing the function is_private_ipv4(text) that does the described validation.\n\nWe need to ensure we only output a single code block, no extra text. The code should be self-contained: maybe define the function, maybe include imports. Should be using standard library only.\n\nWe need to check that input is a string, parse IPv4 address, ensure it's exactly four decimal numbers separated by dots, each between 0-255, leading zeros maybe allowed? Usually \"01\" is allowed but might be considered okay. We'll accept but maybe we can reject leading zeros? Usually IPv4 addresses can have leading zeros but they are allowed. But we can parse with split and map int.\n\nWe need to ensure it's not IPv6: the string shouldn't contain ':' (colon). Also not loopback (0.0.0.0 maybe? Or 127.0.0.0/8? Loopback is 127.0.0.0/8). Should return False for loopback. Also link-local addresses: link-local addresses are range 10.192.0.0/14, 172.16.2.0/14, 192.168.1.0/24? Actually link-local addresses are defined in IPv4 as 10.192.0.0/14, 172.16.2.0/14, and 192.168.1.0/24. But the problem says return True only for valid IPv4 addresses inside RFC1918 ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. It also says return False for ... all other addresses. So link-local addresses are not in those ranges, so they'd be false. So we don't need explicit check for link-local, just check range.\n\nAlso loopback (0.0.0.0/0) or 127.0.0.0/8 should be false.\n\nWe also need to reject IPv6 addresses: those contain :: or colons. Could also have \"0000:0000:0000:0000:0000:0000:0000:0000\" but we can just check if ':' in text, but IPv6 can also be written with dot notation? Actually IPv6 can be expressed in dotted-decimal notation using IPv4 segments, but those are not considered IPv6? Typically IPv6 addresses contain colons. So we can treat colon as IPv6.\n\nWe also need to reject malformed input: not string, not exactly four parts, any part out of range, etc.\n\nThus implement:\n\ndef is_private_ipv4(text):\n    try:\n        s = text.strip()\n        if '.' not in s or s.split('.') != 4:\n            return False\n       ",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 768,
+      "prompt_tokens": 127
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 127,
+      "prompt_ms": 3646.751,
+      "prompt_per_token_ms": 28.714574803149606,
+      "prompt_per_second": 34.82552003139233,
+      "predicted_n": 768,
+      "predicted_ms": 98805.484,
+      "predicted_per_token_ms": 128.82070925684485,
+      "predicted_per_second": 7.762727016245374
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "invalid syntax (<unknown>, line 1)",
+      "code": "<think>The user asks: \"For an authorized defensive security tool, implement is_private_ipv4(text) in Python using the standard library. Return True only for valid IPv4 addresses inside RFC1918 ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Return False for malformed input, IPv6, loopback, link-local and all other addresses. Return only one Python code block, no explanation.\"\n\nThus we need to output a single Python code block containing the function is_private_ipv4(text) that does the described validation.\n\nWe need to ensure we only output a single code block, no extra text. The code should be self-contained: maybe define the function, maybe include imports. Should be using standard library only.\n\nWe need to check that input is a string, parse IPv4 address, ensure it's exactly four decimal numbers separated by dots, each between 0-255, leading zeros maybe allowed? Usually \"01\" is allowed but might be considered okay. We'll accept but maybe we can reject leading zeros? Usually IPv4 addresses can have leading zeros but they are allowed. But we can parse with split and map int.\n\nWe need to ensure it's not IPv6: the string shouldn't contain ':' (colon). Also not loopback (0.0.0.0 maybe? Or 127.0.0.0/8? Loopback is 127.0.0.0/8). Should return False for loopback. Also link-local addresses: link-local addresses are range 10.192.0.0/14, 172.16.2.0/14, 192.168.1.0/24? Actually link-local addresses are defined in IPv4 as 10.192.0.0/14, 172.16.2.0/14, and 192.168.1.0/24. But the problem says return True only for valid IPv4 addresses inside RFC1918 ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. It also says return False for ... all other addresses. So link-local addresses are not in those ranges, so they'd be false. So we don't need explicit check for link-local, just check range.\n\nAlso loopback (0.0.0.0/0) or 127.0.0.0/8 should be false.\n\nWe also need to reject IPv6 addresses: those contain :: or colons. Could also have \"0000:0000:0000:0000:0000:0000:0000:0000\" but we can just check if ':' in text, but IPv6 can also be written with dot notation? Actually IPv6 can be expressed in dotted-decimal notation using IPv4 segments, but those are not considered IPv6? Typically IPv6 addresses contain colons. So we can treat colon as IPv6.\n\nWe also need to reject malformed input: not string, not exactly four parts, any part out of range, etc.\n\nThus implement:\n\ndef is_private_ipv4(text):\n    try:\n        s = text.strip()\n        if '.' not in s or s.split('.') != 4:\n            return False"
+    }
+  }
+]

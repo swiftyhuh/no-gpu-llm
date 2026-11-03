@@ -1,0 +1,142 @@
+[
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "intervals",
+    "seconds": 7.492036838999411,
+    "first_token_seconds": 1.123140630999842,
+    "first_answer_seconds": 1.123141404999842,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    for start, end in sorted_intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], end))\n        else:\n            merged.append((start, end))\n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 118,
+      "prompt_tokens": 77,
+      "total_tokens": 195,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 77,
+      "prompt_ms": 1106.934,
+      "prompt_per_token_ms": 14.375766233766234,
+      "prompt_per_second": 69.56150953896078,
+      "predicted_n": 118,
+      "predicted_ms": 6371.354,
+      "predicted_per_token_ms": 54.4560170940171,
+      "predicted_per_second": 18.363443625954545
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    for start, end in sorted_intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], end))\n        else:\n            merged.append((start, end))\n    return merged\n"
+    }
+  },
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "toposort",
+    "seconds": 24.99748004400135,
+    "first_token_seconds": 1.269852590001392,
+    "first_answer_seconds": 1.269853358000546,
+    "content": "```python\ndef topo_sort(graph):\n    in_degree = {node: 0 for node in graph}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            if prereq not in in_degree:\n                in_degree[prereq] = 0\n            in_degree[node] = in_degree.get(node, 0)\n            in_degree[prereq] = in_degree.get(prereq, 0)\n\n    # Count actual prerequisites\n    in_degree = {node: len(graph.get(node, [])) for node in graph}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            if prereq not in graph:\n                in_degree[prereq] = 0\n\n    # Ensure all nodes are in in_degree\n    all_nodes = set(graph.keys())\n    for prereqs in graph.values():\n        all_nodes.update(prereqs)\n    for node in all_nodes:\n        if node not in in_degree:\n            in_degree[node] = 0\n\n    # Find nodes with no prerequisites\n    ready = sorted([node for node in in_degree if in_degree[node] == 0])\n    result = []\n    while ready:\n        node = ready.pop(0)\n        result.append(node)\n        # Find all dependents of this node\n        for other, prereqs in graph.items():\n            if node in prereqs:\n                in_degree[other] -= 1\n                if in_degree[other] == 0:\n                    # Insert in sorted order to maintain lexicographic order\n                    import bisect\n                    bisect.insort(ready, other)\n    # Check for cycles\n    if len(result) != len(all_nodes):\n        raise ValueError(\"Cycle detected in graph\")\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 421,
+      "prompt_tokens": 89,
+      "total_tokens": 510,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 89,
+      "prompt_ms": 1230.244,
+      "prompt_per_token_ms": 13.822966292134831,
+      "prompt_per_second": 72.34337253422899,
+      "predicted_n": 421,
+      "predicted_ms": 23727.169,
+      "predicted_per_token_ms": 56.49325952380953,
+      "predicted_per_second": 17.70122680881145
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 50, in <module>\n    assert topo_sort({'a':['x','x']})==['x','a']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 44, in topo_sort\n    raise ValueError(\"Cycle detected in graph\")\nValueError: Cycle detected in graph\n",
+      "code": "def topo_sort(graph):\n    in_degree = {node: 0 for node in graph}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            if prereq not in in_degree:\n                in_degree[prereq] = 0\n            in_degree[node] = in_degree.get(node, 0)\n            in_degree[prereq] = in_degree.get(prereq, 0)\n\n    # Count actual prerequisites\n    in_degree = {node: len(graph.get(node, [])) for node in graph}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            if prereq not in graph:\n                in_degree[prereq] = 0\n\n    # Ensure all nodes are in in_degree\n    all_nodes = set(graph.keys())\n    for prereqs in graph.values():\n        all_nodes.update(prereqs)\n    for node in all_nodes:\n        if node not in in_degree:\n            in_degree[node] = 0\n\n    # Find nodes with no prerequisites\n    ready = sorted([node for node in in_degree if in_degree[node] == 0])\n    result = []\n    while ready:\n        node = ready.pop(0)\n        result.append(node)\n        # Find all dependents of this node\n        for other, prereqs in graph.items():\n            if node in prereqs:\n                in_degree[other] -= 1\n                if in_degree[other] == 0:\n                    # Insert in sorted order to maintain lexicographic order\n                    import bisect\n                    bisect.insort(ready, other)\n    # Check for cycles\n    if len(result) != len(all_nodes):\n        raise ValueError(\"Cycle detected in graph\")\n    return result\n"
+    }
+  },
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "window",
+    "seconds": 6.838256547000128,
+    "first_token_seconds": 1.2028415630011295,
+    "first_answer_seconds": 1.202841881000495,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 102,
+      "prompt_tokens": 76,
+      "total_tokens": 178,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 1177.866,
+      "prompt_per_token_ms": 15.498236842105262,
+      "prompt_per_second": 64.5234687137586,
+      "predicted_n": 102,
+      "predicted_ms": 5635.231,
+      "predicted_per_token_ms": 55.79436633663366,
+      "predicted_per_second": 17.92295648572348
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n"
+    }
+  },
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "security",
+    "seconds": 4.972728171000199,
+    "first_token_seconds": 1.8539357739991829,
+    "first_answer_seconds": 1.8539361950006423,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        addr = ipaddress.IPv4Address(text)\n        return addr.is_private\n    except (ValueError, ipaddress.AddressValueError):\n        return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 57,
+      "prompt_tokens": 130,
+      "total_tokens": 187,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 130,
+      "prompt_ms": 1814.676,
+      "prompt_per_token_ms": 13.959046153846153,
+      "prompt_per_second": 71.63813264737065,
+      "predicted_n": 57,
+      "predicted_ms": 3118.269,
+      "predicted_per_token_ms": 55.683375,
+      "predicted_per_second": 17.95868156339302
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n    for x in ['172.15.1.1','172.32.0.0','192.169.0.0','127.0.0.1','169.254.1.1','0.0.0.0','100.64.0.1','8.8.8.8','::1','::ffff:10.1.1.1','bad','10.1.2.999','10.1.2.3/24']: assert not is_private_ipv4(x), x\n                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 127.0.0.1\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        addr = ipaddress.IPv4Address(text)\n        return addr.is_private\n    except (ValueError, ipaddress.AddressValueError):\n        return False\n"
+    }
+  }
+]

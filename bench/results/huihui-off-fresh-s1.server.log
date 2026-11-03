@@ -1,0 +1,3 @@
+janas-server: 0 stored documents in ~/.local/share/janas/server
+janas-server: opening ~/janas/models/huihui-qwen36-q4k.jns...
+janas-server: ~/janas/models/huihui-qwen36-q4k.jns: tensor blk.40.ffn_gate_inp.weight missing or unexpected

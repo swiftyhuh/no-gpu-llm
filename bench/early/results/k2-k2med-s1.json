@@ -1,0 +1,142 @@
+[
+  {
+    "model": "k2",
+    "mode": "k2med",
+    "task": "intervals",
+    "seconds": 51.09554247499909,
+    "first_token_seconds": 2.6104039900001226,
+    "first_answer_seconds": null,
+    "content": "",
+    "reasoning": "The user wants an implementation of merge_intervals that takes a list of (start, end) integer pairs, merges touching intervals, does not mutate input, handles empty input, returns sorted merged tuples. Provide only one Python code block, no explanation. So just output code. Should include function merge_intervals(intervals): sort copy, merge. Edge cases. Return list of tuples. Let's write.</ifm|think>```python\ndef merge_intervals(intervals):\n    \"\"\"\n    Merge intervals, also merging touching ones.\n    Returns a list of sorted (start, end) tuples.\n    The input list is not mutated.\n    \"\"\"\n    # Handle empty input\n    if not intervals:\n        return []\n\n    # Work on a sorted copy (do not mutate original)\n    sorted_intervals = sorted(intervals, key=lambda x: (x[0], x[1]))\n\n    merged = []\n    current_start, current_end = sorted_intervals[0]\n\n    for start, end in sorted_intervals[1:]:\n        # Overlap or touch: merge\n        if start <= current_end + 1:\n            current_end = max(current_end, end)\n        else:\n            merged.append((current_start, current_end))\n            current_start, current_end = start, end\n\n    # Append the last interval\n    merged.append((current_start, current_end))\n    return merged\n```",
+    "usage": {
+      "completion_tokens": 274,
+      "prompt_tokens": 64,
+      "total_tokens": 338,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 64,
+      "prompt_ms": 2607.646,
+      "prompt_per_token_ms": 40.74446875,
+      "prompt_per_second": 24.543208702408222,
+      "predicted_n": 274,
+      "predicted_ms": 48485.044,
+      "predicted_per_token_ms": 177.60089377289378,
+      "predicted_per_second": 5.6306022945962475
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 6, in <module>\n    assert merge_intervals(x)==[(1,7),(10,10)]\n           ^^^^^^^^^^^^^^^\nNameError: name 'merge_intervals' is not defined\n",
+      "code": ""
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2med",
+    "task": "toposort",
+    "seconds": 194.25150333300007,
+    "first_token_seconds": 3.2138759949993982,
+    "first_answer_seconds": null,
+    "content": "",
+    "reasoning": "The user wants an implementation of topo_sort(graph) in Python. Requirements:\n\n- graph maps each node (string) to its prerequisite nodes.\n- Include nodes that appear only as prerequisites.\n- Return prerequisites before dependents.\n- Whenever multiple nodes are ready, choose the lexicographically smallest.\n- Raise ValueError on any cycle.\n- Do not mutate graph.\n- Return only one Python code block, no explanation.\n\nSo need to write a function `topo_sort(graph)`. Should produce a list of nodes sorted topologically, with tie-breaking by lexicographically smallest ready node each step.\n\nImplementation: Use Kahn's algorithm. Compute indegree for each node. Need to include all nodes from graph keys and values.\n\nWe must not mutate the original graph, so copy adjacency list.\n\nImplementation steps:\n\n- Copy graph: adj = {k: set(v) for k, v in graph.items()}\n- Build set of all nodes: nodes = set(adj.keys()) | set(v for deps in adj.values() for v in deps)\n- Build indegree dict: for each node, indegree[node] = 0 initially. Then for each node, for each prereq in adj[node], increment indegree[node] and ensure prereq indegree exists (maybe 0 if not present).\n- Use a priority queue (heap) of ready nodes (indegree 0). Pop smallest lexicographically (heap does that).\n- Append to result.\n- While heap not empty: pop node, for each dependent (i.e., nodes that have this node as prereq), decrement indegree and push if zero.\n- At end, if len(result) != len(nodes): raise ValueError(\"Graph has a cycle\").\n\nReturn result list.\n\nEdge cases: If graph empty, result empty.\n\nMake sure to treat adjacency as list to iterate.\n\nImplementation inside a function. Should we use typing? Could but not necessary.\n\nWrite only code block.\n\nLet's produce:\n\n```python\ndef topo_sort(graph):\n    # Copy the graph without mutating the original\n    adj = {node: list(prereqs) for node, prereqs in graph.items()}\n    \n    # Gather all nodes (including only-prerequisite nodes)\n    all_nodes = set(adj.keys())\n    for prereqs in adj.values():\n        all_nodes.update(prereqs)\n    \n    # Compute indegrees\n    indegree = {node: 0 for node in all_nodes}\n    for node, prereqs in adj.items():\n        for prereq in prereqs:\n            indegree[node] += 1\n            indegree.setdefault(prereq, 0)\n    \n    # Priority queue (min-heap) for ready nodes\n    import heapq\n    ready = [node for node in all_nodes if indegree[node] == 0]\n    heapq.heapify(ready)\n    \n    result = []\n    while ready:\n        node = heapq.heappop(ready)\n        result.append(node)\n        # Find dependents of this node\n        dependents = [n for n, pr in adj.items() if node in pr]\n        for dependent in dependents:\n            indegree[dependent] -= 1\n            if indegree[dependent] == 0:\n                heapq.heappush(ready, dependent)\n    \n    if len(result) != len(all_nodes):\n        raise ValueError(\"Graph has a cycle\")\n    \n    return result\n```\n\nThat's fine. Ensure we didn't mutate graph. We used list of prereqs, no modifications.\n\nReturn only code block.</ifm|think>```python\ndef topo_sort(graph):\n    # Copy the graph without mutating the original\n    adj = {node: list(prereqs) for node, prereqs in graph.items()}\n\n    # Gather all nodes (including only-prerequisite nodes)\n    all_nodes = set(adj.keys())\n    for prereqs in adj.values():\n        all_nodes.update(prereqs)\n\n    # Compute indegrees\n    indegree = {node: 0 for node in all_nodes}\n    for node, prereqs in adj.items():\n        for prereq in prereqs:\n            indegree[node] += 1\n            indegree.setdefault(prereq, 0)\n\n    # Priority queue (min-heap) for ready nodes\n    import heapq\n    ready = [node for node in all_nodes if indegree[node] == 0]\n    heapq.heapify(ready)\n\n    result = []\n    while ready:\n        node = heapq.heappop(ready)\n        result.append(node)\n        # Find dependents of this node\n        dependents = [n for n, pr in adj.items() if node in pr]\n        for dependent in dependents:\n            indegree[dependent] -= 1\n            if indegree[dependent] == 0:\n                heapq.heappush(ready, dependent)\n\n    if len(result) != len(all_nodes):\n        raise ValueError(\"Graph has a cycle\")\n\n    return result\n```",
+    "usage": {
+      "completion_tokens": 992,
+      "prompt_tokens": 76,
+      "total_tokens": 1068,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 3195.037,
+      "prompt_per_token_ms": 42.03996052631579,
+      "prompt_per_second": 23.786891982784553,
+      "predicted_n": 992,
+      "predicted_ms": 191037.347,
+      "predicted_per_token_ms": 192.77229767911203,
+      "predicted_per_second": 5.187467348989096
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ^^^^^^^^^\nNameError: name 'topo_sort' is not defined\n",
+      "code": ""
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2med",
+    "task": "window",
+    "seconds": 59.17479901800107,
+    "first_token_seconds": 2.5300791270001355,
+    "first_answer_seconds": null,
+    "content": "",
+    "reasoning": "The user wants Python implementation of window_sums(nums,k). Should handle edge cases. Provide code only, one code block. Must raise ValueError for k<=0. Return [] if k>len(nums). O(n). Do not mutate nums.\n\nImplement using sliding window: compute sum of first k, then slide: sum += nums[i] - nums[i-k].\n\nWill handle empty list? If k>len(nums) includes empty, returns [].\n\nReturn list of sums length n-k+1.\n\nWrite function.\n\nAlso include docstring maybe.\n\nWill not mutate.\n\nOk.</ifm|think>```python\ndef window_sums(nums, k):\n    \"\"\"\n    Return a list containing the sum of each consecutive window of size k\n    in O(n) time.\n\n    Parameters\n    ----------\n    nums : Sequence[int]\n        The input list of numbers.\n    k : int\n        Size of the window.\n\n    Returns\n    -------\n    list[int]\n        List of window sums.\n\n    Raises\n    ------\n    ValueError\n        If k <= 0.\n    \"\"\"\n    if k <= 0:\n        raise ValueError(\"k must be a positive integer\")\n    n = len(nums)\n    if k > n:\n        return []\n\n    # Sum of the first window\n    total = sum(nums[:k])\n    result = [total]\n\n    # Slide the window across the list\n    for i in range(k, n):\n        total += nums[i] - nums[i - k]\n        result.append(total)\n\n    return result\n```",
+    "usage": {
+      "completion_tokens": 305,
+      "prompt_tokens": 64,
+      "total_tokens": 369,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 64,
+      "prompt_ms": 2484.124,
+      "prompt_per_token_ms": 38.8144375,
+      "prompt_per_second": 25.763609224016193,
+      "predicted_n": 305,
+      "predicted_ms": 56644.475,
+      "predicted_per_token_ms": 186.33050986842105,
+      "predicted_per_second": 5.366807618924883
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\n    assert window_sums([1,2,3,4],2)==[3,5,7]\n           ^^^^^^^^^^^\nNameError: name 'window_sums' is not defined\n",
+      "code": ""
+    }
+  },
+  {
+    "model": "k2",
+    "mode": "k2med",
+    "task": "security",
+    "seconds": 104.1303342809988,
+    "first_token_seconds": 4.605577476999315,
+    "first_answer_seconds": null,
+    "content": "",
+    "reasoning": "The user asks for code implementing is_private_ipv4(text) in Python using stdlib. Need to check: \"For an authorized defensive security tool, implement is_private_ipv4(text) in Python using the standard library. Return True only for valid IPv4 addresses inside RFC1918 ranges... Return False for malformed input, IPv6, loopback, link-local and all other addresses. Return only one Python code block, no explanation.\"\n\nWe need to produce code only, no explanation. Must implement function is_private_ipv4. Use standard library. Should parse string, validate IPv4, then check ranges. Should return False for IPv6 strings (maybe includes colon). Also for IPv4-mapped IPv6? Probably reject if not IPv4.\n\nImplementation: Use ipaddress module. Then check ip.version == 4. Then ip in ip_network('10.0.0.0/8') or ip_network('172.16.0.0/12') or ip_network('192.168.0.0/16'). If ipaddress.AddressFamily not IPv4, return False. Also ensure not IPv6.\n\nWrite function:\n\nfrom ipaddress import ip_network, AddressFamily\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n    except ValueError:\n        return False\n    if ip.version != 4:\n        return False\n    return any(ip in ip_network(network) for network in ('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'))\n\nEdge cases: text could be \"1.2.3.4\". Good.\n\nReturn only code block.</ifm|think>```python\nfrom ipaddress import ip_address, ip_network\n\ndef is_private_ipv4(text):\n    \"\"\"Return True if `text` is a valid IPv4 address within RFC1918 ranges.\"\"\"\n    try:\n        ip = ip_address(text)\n    except (ValueError, TypeError):\n        return False\n\n    # Only consider IPv4 addresses; IPv6 (or other families) are rejected.\n    if ip.version != 4:\n        return False\n\n    # RFC1918 private ranges.\n    return any(ip in ip_network(net) for net in (\n        \"10.0.0.0/8\",\n        \"172.16.0.0/12\",\n        \"192.168.0.0/16\",\n    ))\n```",
+    "usage": {
+      "completion_tokens": 498,
+      "prompt_tokens": 106,
+      "total_tokens": 604,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 106,
+      "prompt_ms": 4585.29,
+      "prompt_per_token_ms": 43.257452830188676,
+      "prompt_per_second": 23.117403697476057,
+      "predicted_n": 498,
+      "predicted_ms": 99524.635,
+      "predicted_per_token_ms": 200.2507746478873,
+      "predicted_per_second": 4.993738484948978
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\n    for x in ['10.0.0.0','10.255.255.255','172.16.0.0','172.31.255.255','192.168.1.2']: assert is_private_ipv4(x), x\n                                                                                               ^^^^^^^^^^^^^^^\nNameError: name 'is_private_ipv4' is not defined\n",
+      "code": ""
+    }
+  }
+]

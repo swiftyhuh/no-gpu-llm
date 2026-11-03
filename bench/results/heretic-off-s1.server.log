@@ -1,0 +1,5 @@
+janas-server: 0 stored documents in ~/.local/share/janas/server
+janas-server: opening ~/janas/models/heretic-qwen36-q4km.jns...
+janas-server: Qwen3.6 35B A3B Uncensored Heretic Native MTP Preserved (qwen35moe), context 16384 tokens, expert cache 5.0 GiB, up to 8 compute threads, no GPU (turned off by JANAS_GPU=0), drafts from the MTP block, down matrix at 4 bits (memory), 3020 experts loading in the background
+janas-server: model 'heretic-qwen36-q4km' on http://127.0.0.1:18767/v1; Ctrl+C stops it
+janas-server: stopping

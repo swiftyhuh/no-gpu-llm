@@ -1,0 +1,80 @@
+
+== This machine
+   CPU:    Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz, 8 threads, avx2
+   memory: 15.5 GiB, 14.0 GiB free now
+   disk:   SK hynix PC711 HFS512GDE9X073N, 64.7 GiB free for the models
+   system: Arch Linux, Linux 7.2.11-arch1-1, gcc (GCC) 16.2.1 20260810
+   GPU:    vulkaninfo not installed; Janas will be built with GPU support
+   power:  mains; load now 3.82
+   the machine is busy: the speeds will say so
+
+== Building Janas (./build.sh release test): a few minutes
+
+janas-try: the build or its tests failed: ~/janas/janas-try/build.log
+
+== The report (~/janas/janas-try/janas-try-report.md)
+
+## Janas test report
+
+- Janas commit: `faae71d`
+- Levels: medium
+- CPU: Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz (8 threads; avx2)
+- Memory: 15.5 GiB
+- Disk: SK hynix PC711 HFS512GDE9X073N
+- System: Arch Linux, Linux 7.2.11-arch1-1
+- Compiler: gcc (GCC) 16.2.1 20260810
+- GPU seen by Vulkan: vulkaninfo not installed; Janas built with GPU support
+- Power: mains
+- Load when it started: 3.82 over 8 threads (the speed lines below say how idle the CPU was before each measurement)
+
+### Results
+
+**The build failed.** End of its log:
+
+```
+LD  bin/x86_64-linux/janas-mcp
+CC  src/nsm/lexicon.c
+CC  src/nsm/score.c
+CC  src/nsm/vocab.c
+LD  bin/x86_64-linux/janas-nsm
+CC  src/server/assistants.c
+CC  src/server/audio.c
+CC  src/server/batches.c
+CC  src/server/chat.c
+CC  src/server/chat_out.c
+CC  src/server/chat_stream.c
+CC  src/server/containers.c
+CC  src/server/conversations.c
+CC  src/server/embeddings.c
+CC  src/server/engine.c
+CC  src/server/evals.c
+CC  src/server/evals_metrics.c
+CC  src/server/files.c
+CC  src/server/files_store.c
+CC  src/server/fim.c
+CC  src/server/http.c
+CC  src/server/images.c
+CC  src/server/infill.c
+CC  src/server/models.c
+CC  src/server/moderations.c
+CC  src/server/multipart.c
+CC  src/server/origin.c
+CC  src/server/request.c
+CC  src/server/request_opts.c
+CC  src/server/responses.c
+CC  src/server/responses_in.c
+CC  src/server/responses_mcp.c
+src/server/responses_mcp.c: In function ‘run_web’:
+src/server/responses_mcp.c:355:50: error: ‘%s’ directive output may be truncated writing up to 14099 bytes into a region of size 256 [-Werror=format-truncation=]
+  355 |             snprintf(w->title, sizeof w->title, "%s", hits[i].title);
+      |                                                  ^~
+src/server/responses_mcp.c:355:13: note: ‘snprintf’ output between 1 and 14100 bytes into a destination of size 256
+  355 |             snprintf(w->title, sizeof w->title, "%s", hits[i].title);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+```
+
+./tools/janas-try.sh: line 98: /dev/tty: No such device or address
+   not sent; the report stays in ~/janas/janas-try/janas-try-report.md
+
+== Done. Thank you for trying Janas.

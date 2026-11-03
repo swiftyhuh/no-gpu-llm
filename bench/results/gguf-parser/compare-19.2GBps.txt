@@ -1,0 +1,10 @@
+bandwidth 19.2GBps, CPU 134.4GFLOPS, -c 4096, no GPU layers
+model                         kind    predicted  measured  measured/predicted  note
+MiniCPM5-2B Q4_K_M            dense        6.44      10.3                1.6x  
+K2-Horizon-3.7B Q4_K_M        dense        2.85       5.2                1.8x  
+Qwen3.5-2B Heretic Q4_K_M     dense        9.63       8.6                0.9x  during a download
+Qwen2.5-Coder-3B Q4_K_M       dense        5.10       6.6                1.3x  during a download
+Groot-19B-A3B Q3_K_M          MoE          0.92       7.5                8.1x  
+Qwen3-Coder-30B-A3B IQ2_XXS   MoE          0.55       6.5               11.9x  
+Ling-3.0-tiny Compact         MoE          2.30      16.6                7.2x  
+Mellum2.1 Thinking Q4_K_M     MoE          1.40       8.1                5.8x  

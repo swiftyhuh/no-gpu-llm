@@ -1,0 +1,142 @@
+[
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "intervals",
+    "seconds": 8.046514360999936,
+    "first_token_seconds": 1.2728372839992517,
+    "first_answer_seconds": 1.272838184999273,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    for start, end in sorted_intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], end))\n        else:\n            merged.append((start, end))\n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 118,
+      "prompt_tokens": 77,
+      "total_tokens": 195,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 77,
+      "prompt_ms": 1269.605,
+      "prompt_per_token_ms": 16.488376623376624,
+      "prompt_per_second": 60.648784464459425,
+      "predicted_n": 118,
+      "predicted_ms": 6774.188,
+      "predicted_per_token_ms": 57.899042735042734,
+      "predicted_per_second": 17.271442717562607
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    for start, end in sorted_intervals[1:]:\n        if start <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], end))\n        else:\n            merged.append((start, end))\n    return merged\n"
+    }
+  },
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "toposort",
+    "seconds": 14.04700578200027,
+    "first_token_seconds": 1.4480722949992924,
+    "first_answer_seconds": 1.4480732430001808,
+    "content": "```python\ndef topo_sort(graph):\n    in_degree = {node: 0 for node in graph}\n    for node in graph:\n        for prereq in graph[node]:\n            if prereq not in in_degree:\n                in_degree[prereq] = 0\n            in_degree[prereq] += 1\n\n    ready = sorted([n for n in in_degree if in_degree[n] == 0])\n    result = []\n\n    while ready:\n        node = ready.pop(0)\n        result.append(node)\n        for neighbor in graph.get(node, []):\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                # Insert neighbor into sorted position\n                import bisect\n                bisect.insort(ready, neighbor)\n\n    if len(result) != len(in_degree):\n        raise ValueError(\"Cycle detected\")\n\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 217,
+      "prompt_tokens": 89,
+      "total_tokens": 306,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 89,
+      "prompt_ms": 1419.258,
+      "prompt_per_token_ms": 15.946719101123596,
+      "prompt_per_second": 62.708823906576534,
+      "predicted_n": 217,
+      "predicted_ms": 12598.784,
+      "predicted_per_token_ms": 58.327703703703705,
+      "predicted_per_second": 17.144511724306092
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 30, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "code": "def topo_sort(graph):\n    in_degree = {node: 0 for node in graph}\n    for node in graph:\n        for prereq in graph[node]:\n            if prereq not in in_degree:\n                in_degree[prereq] = 0\n            in_degree[prereq] += 1\n\n    ready = sorted([n for n in in_degree if in_degree[n] == 0])\n    result = []\n\n    while ready:\n        node = ready.pop(0)\n        result.append(node)\n        for neighbor in graph.get(node, []):\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                # Insert neighbor into sorted position\n                import bisect\n                bisect.insort(ready, neighbor)\n\n    if len(result) != len(in_degree):\n        raise ValueError(\"Cycle detected\")\n\n    return result\n"
+    }
+  },
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "window",
+    "seconds": 7.1008948820017395,
+    "first_token_seconds": 1.2492060670010687,
+    "first_answer_seconds": 1.2492064670004766,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 102,
+      "prompt_tokens": 76,
+      "total_tokens": 178,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 1215.612,
+      "prompt_per_token_ms": 15.994894736842106,
+      "prompt_per_second": 62.51994879945245,
+      "predicted_n": 102,
+      "predicted_ms": 5851.541,
+      "predicted_per_token_ms": 57.936049504950496,
+      "predicted_per_second": 17.260410548264122
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    if k > len(nums):\n        return []\n    result = []\n    window_sum = sum(nums[:k])\n    result.append(window_sum)\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        result.append(window_sum)\n    return result\n"
+    }
+  },
+  {
+    "model": "ling-heretic",
+    "mode": "instruct",
+    "task": "security",
+    "seconds": 4.7533957499999815,
+    "first_token_seconds": 1.959793369000181,
+    "first_answer_seconds": 1.9597937489998003,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        addr = ipaddress.IPv4Address(text)\n    except ValueError:\n        return False\n    return addr.is_private\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 49,
+      "prompt_tokens": 130,
+      "total_tokens": 179,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 130,
+      "prompt_ms": 1926.425,
+      "prompt_per_token_ms": 14.818653846153845,
+      "prompt_per_second": 67.48251294496282,
+      "predicted_n": 49,
+      "predicted_ms": 2793.49,
+      "predicted_per_token_ms": 58.19770833333333,
+      "predicted_per_second": 17.182807169526292
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n    for x in ['172.15.1.1','172.32.0.0','192.169.0.0','127.0.0.1','169.254.1.1','0.0.0.0','100.64.0.1','8.8.8.8','::1','::ffff:10.1.1.1','bad','10.1.2.999','10.1.2.3/24']: assert not is_private_ipv4(x), x\n                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 127.0.0.1\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        addr = ipaddress.IPv4Address(text)\n    except ValueError:\n        return False\n    return addr.is_private\n"
+    }
+  }
+]

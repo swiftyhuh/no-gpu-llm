@@ -1,0 +1,20 @@
+{
+ "preset": "groot-q3-sys",
+ "seed": 1,
+ "results": [
+  {
+   "task": "cpp_lru",
+   "passed": false,
+   "why": "compile: sol.hpp:45:17: error: subscripted value is neither array nor pointer",
+   "seconds": 71.2,
+   "first_code": 7.3,
+   "finish": "stop",
+   "tokens": 461,
+   "tok_s": 7.2,
+   "reasoning_chars": 0,
+   "content": "```cpp\n// LRUCache.hpp\n#ifndef LRU_CACHE_HPP\n#define LRU_CACHE_HPP\n\n#include <cstddef>\n#include <optional>\n#include <unordered_map>\n#include <list>\n#include <mutex>\n\ntemplate <typename K, typename V>\nclass LRUCache {\npublic:\n    explicit LRUCache(std::size_t capacity)\n        : capacity_(capacity) {}\n\n    std::optional<V> get(const K& key) const {\n        std::lock_guard<std::mutex> lock(mu_);\n        auto it = map_.find(key);\n        if (it == map_.end()) {\n            return std::nullopt;\n        }\n        // Move to front to mark as recently used\n        cache_.splice(cache_.begin(), cache_, it->second);\n        return cache_.front().second;\n    }\n\n    void put(const K& key, const V& value) {\n        std::lock_guard<std::mutex> lock(mu_);\n        auto it = map_.find(key);\n        if (it != map_.end()) {\n            // Update existing key and mark as recently used\n            cache_.erase(it->second);\n            cache_.push_front({key, value});\n            it->second = cache_.begin();\n        } else {\n            if (capacity_ == 0) {\n                return;\n            }\n            if (cache_.size() >= capacity_) {\n                map_.erase(cache_.back().first);\n                cache_.pop_back();\n            }\n            cache_.push_front({key, value});\n            map_[key] = cache_.begin();\n        }\n    }\n\n    std::size_t size() const {\n        std::lock_guard<std::mutex> lock(mu_);\n        return cache_.size();\n    }\n\nprivate:\n    std::size_t capacity_;\n    mutable std::mutex mu_;\n    std::list<std::pair<K, V>> cache_;\n    std::unordered_map<K, std::list<std::pair<K, V>>::iterator> map_;\n};\n\n#endif // LRU_CACHE_HPP\n```",
+   "reasoning": "",
+   "attempts": 1
+  }
+ ]
+}

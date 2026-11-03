@@ -1,0 +1,142 @@
+[
+  {
+    "model": "qwen25",
+    "mode": "off",
+    "task": "intervals",
+    "seconds": 18.38337926999975,
+    "first_token_seconds": 2.9567900009997174,
+    "first_answer_seconds": 2.9567906559996118,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    \n    for interval in intervals[1:]:\n        if interval[0] <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], interval[1]))\n        else:\n            merged.append(interval)\n    \n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 100,
+      "prompt_tokens": 83,
+      "total_tokens": 183,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 83,
+      "prompt_ms": 2954.382,
+      "prompt_per_token_ms": 35.59496385542169,
+      "prompt_per_second": 28.093861931192375,
+      "predicted_n": 100,
+      "predicted_ms": 15426.267,
+      "predicted_per_token_ms": 155.8208787878788,
+      "predicted_per_second": 6.417625210298771
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 21, in <module>\n    assert x==y\n           ^^^^\nAssertionError\n",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    \n    for interval in intervals[1:]:\n        if interval[0] <= merged[-1][1]:\n            merged[-1] = (merged[-1][0], max(merged[-1][1], interval[1]))\n        else:\n            merged.append(interval)\n    \n    return merged\n"
+    }
+  },
+  {
+    "model": "qwen25",
+    "mode": "off",
+    "task": "toposort",
+    "seconds": 28.198157177000212,
+    "first_token_seconds": 3.195602083000267,
+    "first_answer_seconds": 3.195603033000225,
+    "content": "```python\ndef topo_sort(graph):\n    in_degree = {node: 0 for node in graph}\n    for node in graph:\n        for prerequisite in graph[node]:\n            in_degree[prerequisite] += 1\n\n    queue = [node for node in in_degree if in_degree[node] == 0]\n    topo_order = []\n\n    while queue:\n        node = min(queue)  # Choose the lexicographically smallest node\n        topo_order.append(node)\n        queue.remove(node)\n\n        for neighbor in graph[node]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n\n    if len(topo_order) != len(graph):\n        raise ValueError(\"Cycle detected in the graph\")\n\n    return topo_order\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 163,
+      "prompt_tokens": 97,
+      "total_tokens": 260,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 97,
+      "prompt_ms": 3186.956,
+      "prompt_per_token_ms": 32.855216494845365,
+      "prompt_per_second": 30.43656705646391,
+      "predicted_n": 163,
+      "predicted_ms": 25002.301,
+      "predicted_per_token_ms": 154.3351913580247,
+      "predicted_per_second": 6.479403635689371
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 28, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 8, in topo_sort\n    in_degree[prerequisite] += 1\n    ~~~~~~~~~^^^^^^^^^^^^^^\nKeyError: 'base'\n",
+      "code": "def topo_sort(graph):\n    in_degree = {node: 0 for node in graph}\n    for node in graph:\n        for prerequisite in graph[node]:\n            in_degree[prerequisite] += 1\n\n    queue = [node for node in in_degree if in_degree[node] == 0]\n    topo_order = []\n\n    while queue:\n        node = min(queue)  # Choose the lexicographically smallest node\n        topo_order.append(node)\n        queue.remove(node)\n\n        for neighbor in graph[node]:\n            in_degree[neighbor] -= 1\n            if in_degree[neighbor] == 0:\n                queue.append(neighbor)\n\n    if len(topo_order) != len(graph):\n        raise ValueError(\"Cycle detected in the graph\")\n\n    return topo_order\n"
+    }
+  },
+  {
+    "model": "qwen25",
+    "mode": "off",
+    "task": "window",
+    "seconds": 13.699702439999783,
+    "first_token_seconds": 2.820054591999906,
+    "first_answer_seconds": 2.820054953000181,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be greater than 0\")\n    if k > len(nums):\n        return []\n    \n    sums = []\n    for i in range(len(nums) - k + 1):\n        sums.append(sum(nums[i:i+k]))\n    \n    return sums\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 75,
+      "prompt_tokens": 84,
+      "total_tokens": 159,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 84,
+      "prompt_ms": 2814.475,
+      "prompt_per_token_ms": 33.50565476190476,
+      "prompt_per_second": 29.84570834702742,
+      "predicted_n": 75,
+      "predicted_ms": 10879.566,
+      "predicted_per_token_ms": 147.02116216216217,
+      "predicted_per_second": 6.801741907719481
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be greater than 0\")\n    if k > len(nums):\n        return []\n    \n    sums = []\n    for i in range(len(nums) - k + 1):\n        sums.append(sum(nums[i:i+k]))\n    \n    return sums\n"
+    }
+  },
+  {
+    "model": "qwen25",
+    "mode": "off",
+    "task": "security",
+    "seconds": 10.822787682000126,
+    "first_token_seconds": 4.592892570000004,
+    "first_answer_seconds": 4.5928928000003,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        return ip.is_private\n    except ValueError:\n        return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 42,
+      "prompt_tokens": 137,
+      "total_tokens": 179,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 137,
+      "prompt_ms": 4586.46,
+      "prompt_per_token_ms": 33.4778102189781,
+      "prompt_per_second": 29.870531957108533,
+      "predicted_n": 42,
+      "predicted_ms": 6229.996,
+      "predicted_per_token_ms": 151.9511219512195,
+      "predicted_per_second": 6.581063615450153
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n    for x in ['172.15.1.1','172.32.0.0','192.169.0.0','127.0.0.1','169.254.1.1','0.0.0.0','100.64.0.1','8.8.8.8','::1','::ffff:10.1.1.1','bad','10.1.2.999','10.1.2.3/24']: assert not is_private_ipv4(x), x\n                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 127.0.0.1\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        return ip.is_private\n    except ValueError:\n        return False\n"
+    }
+  }
+]

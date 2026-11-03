@@ -1,0 +1,142 @@
+[
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "intervals",
+    "seconds": 27.376552847999847,
+    "first_token_seconds": 3.5983954749990517,
+    "first_answer_seconds": 3.5983962659993267,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Sort intervals by start time\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    \n    merged = [sorted_intervals[0]]\n    \n    for interval in sorted_intervals[1:]:\n        start, end = interval\n        last_interval = merged[-1]\n        \n        # If current interval overlaps with the last merged interval, merge them\n        if start <= last_interval[1]:\n            # Update the end of the last interval\n            merged[-1] = (last_interval[0], max(last_interval[1], end))\n        else:\n            # No overlap, add the current interval\n            merged.append(interval)\n    \n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 157,
+      "prompt_tokens": 62,
+      "total_tokens": 219,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 62,
+      "prompt_ms": 3595.945,
+      "prompt_per_token_ms": 57.99911290322581,
+      "prompt_per_second": 17.241643017343144,
+      "predicted_n": 157,
+      "predicted_ms": 23778.038,
+      "predicted_per_token_ms": 152.4233205128205,
+      "predicted_per_second": 6.5606758640052645
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # Sort intervals by start time\n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    \n    merged = [sorted_intervals[0]]\n    \n    for interval in sorted_intervals[1:]:\n        start, end = interval\n        last_interval = merged[-1]\n        \n        # If current interval overlaps with the last merged interval, merge them\n        if start <= last_interval[1]:\n            # Update the end of the last interval\n            merged[-1] = (last_interval[0], max(last_interval[1], end))\n        else:\n            # No overlap, add the current interval\n            merged.append(interval)\n    \n    return merged\n"
+    }
+  },
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "toposort",
+    "seconds": 133.63645908499893,
+    "first_token_seconds": 3.9498672539994004,
+    "first_answer_seconds": 3.94986878599957,
+    "content": "```python\ndef topo_sort(graph):\n    # Create a copy of the graph to avoid mutation\n    graph_copy = {}\n    for node, prerequisites in graph.items():\n        graph_copy[node] = list(prerequisites)\n    \n    # Build reverse graph for easier dependency tracking\n    reverse_graph = {}\n    for node, prerequisites in graph.items():\n        reverse_graph[node] = []\n    for node, prerequisites in graph.items():\n        for prereq in prerequisites:\n            if prereq not in reverse_graph:\n                reverse_graph[prereq] = []\n            reverse_graph[prereq].append(node)\n    \n    # Find all nodes and build initial in-degree count\n    all_nodes = set()\n    in_degree = {}\n    for node, prerequisites in graph.items():\n        all_nodes.add(node)\n        in_degree[node] = len(prerequisites) if prerequisites else 0\r\n    for node in graph.keys():\r\n        all_nodes.add(node)\r\n    for node in all_nodes:\r\n        if node not in in_degree:\r\n            in_degree[node] = 0\r\n    # Also add nodes that appear only as prerequisites\r\n    for node in graph_copy:\r\n        for prereq in graph_copy[node]:\r\n            if prereq not in in_degree:\r\n                in_degree[prereq] = 0\r\n                all_nodes.add(prereq)\r\n    for node in all_nodes:\r\n        if node not in in_degree:\r\n            in_degree[node] = 0\r\n    # Build reverse graph with all nodes\r\n    reverse_graph = {}\r\n    for node in all_nodes:\r\n        reverse_graph[node] = []\r\n    for node, prerequisites in graph.items():\r\n        reverse_graph[node] = []\r\n        for prereq in prerequisites:\r\n            reverse_graph[prereq] = []\r\n            if node not in reverse_graph[node]:\r\n                reverse_graph[node].append(node)\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            if prereq not in reverse_graph:\r\n                reverse_graph[prereq] = []\r\n            if node not in reverse_graph[prereq]:\r\n                reverse_graph[prereq].append(node)\r\n    # Add nodes that appear only as prerequisites to reverse graph\r\n    for node in all_nodes:\r\n        if node not in reverse_graph:\r\n            reverse_graph[node] = []\r\n    \r\n    # Build in-degree count for all nodes\r\n    all_nodes = set()\r\n    for node, prerequisites in graph.items():\r\n        all_nodes.add(node)\r\n        for prereq in prerequisites:\r\n            all_nodes.add(prereq)\r\n    in_degree = {}\r\n    for node in all_nodes:\r\n        in_degree[node] = 0\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            in_degree[prereq] += 1\r\n    # Add nodes that appear only as prerequisites to in_degree\r\n    for node in all_nodes:\r\n        if node not in in_degree:\r\n            in_degree[node] = 0\r\n    # Build reverse graph with all nodes\r\n    reverse_graph = {}\r\n    for node in all_nodes:\r\n        reverse_graph[node] = []\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            if node not in reverse_graph:\r\n                reverse_graph[node] = []\r\n            reverse_graph[prereq] = []\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            reverse_graph[prereq].append(node)\r\n    # Add nodes that appear only as prerequisites to reverse graph\r\n    for node in all_nodes:\r\n        if node not in reverse_graph:\r\n            reverse_graph[node] = []\r\n    \r\n    # Build the in-degree count correctly\r\n    in_degree = {}\r\n    all_nodes = set()\r\n    for node, prerequisites in graph.items():\r\n        all_nodes.add(node)\r\n        for prere",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 768,
+      "prompt_tokens": 76,
+      "total_tokens": 844,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 76,
+      "prompt_ms": 3940.828,
+      "prompt_per_token_ms": 51.853,
+      "prompt_per_second": 19.285287254353655,
+      "predicted_n": 768,
+      "predicted_ms": 129686.433,
+      "predicted_per_token_ms": 169.08270273794002,
+      "predicted_per_second": 5.914265526911361
+    },
+    "finish": "length",
+    "evaluation": {
+      "passed": false,
+      "error": "invalid syntax (<unknown>, line 1)",
+      "code": "```python\ndef topo_sort(graph):\n    # Create a copy of the graph to avoid mutation\n    graph_copy = {}\n    for node, prerequisites in graph.items():\n        graph_copy[node] = list(prerequisites)\n    \n    # Build reverse graph for easier dependency tracking\n    reverse_graph = {}\n    for node, prerequisites in graph.items():\n        reverse_graph[node] = []\n    for node, prerequisites in graph.items():\n        for prereq in prerequisites:\n            if prereq not in reverse_graph:\n                reverse_graph[prereq] = []\n            reverse_graph[prereq].append(node)\n    \n    # Find all nodes and build initial in-degree count\n    all_nodes = set()\n    in_degree = {}\n    for node, prerequisites in graph.items():\n        all_nodes.add(node)\n        in_degree[node] = len(prerequisites) if prerequisites else 0\r\n    for node in graph.keys():\r\n        all_nodes.add(node)\r\n    for node in all_nodes:\r\n        if node not in in_degree:\r\n            in_degree[node] = 0\r\n    # Also add nodes that appear only as prerequisites\r\n    for node in graph_copy:\r\n        for prereq in graph_copy[node]:\r\n            if prereq not in in_degree:\r\n                in_degree[prereq] = 0\r\n                all_nodes.add(prereq)\r\n    for node in all_nodes:\r\n        if node not in in_degree:\r\n            in_degree[node] = 0\r\n    # Build reverse graph with all nodes\r\n    reverse_graph = {}\r\n    for node in all_nodes:\r\n        reverse_graph[node] = []\r\n    for node, prerequisites in graph.items():\r\n        reverse_graph[node] = []\r\n        for prereq in prerequisites:\r\n            reverse_graph[prereq] = []\r\n            if node not in reverse_graph[node]:\r\n                reverse_graph[node].append(node)\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            if prereq not in reverse_graph:\r\n                reverse_graph[prereq] = []\r\n            if node not in reverse_graph[prereq]:\r\n                reverse_graph[prereq].append(node)\r\n    # Add nodes that appear only as prerequisites to reverse graph\r\n    for node in all_nodes:\r\n        if node not in reverse_graph:\r\n            reverse_graph[node] = []\r\n    \r\n    # Build in-degree count for all nodes\r\n    all_nodes = set()\r\n    for node, prerequisites in graph.items():\r\n        all_nodes.add(node)\r\n        for prereq in prerequisites:\r\n            all_nodes.add(prereq)\r\n    in_degree = {}\r\n    for node in all_nodes:\r\n        in_degree[node] = 0\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            in_degree[prereq] += 1\r\n    # Add nodes that appear only as prerequisites to in_degree\r\n    for node in all_nodes:\r\n        if node not in in_degree:\r\n            in_degree[node] = 0\r\n    # Build reverse graph with all nodes\r\n    reverse_graph = {}\r\n    for node in all_nodes:\r\n        reverse_graph[node] = []\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            if node not in reverse_graph:\r\n                reverse_graph[node] = []\r\n            reverse_graph[prereq] = []\r\n    for node, prerequisites in graph.items():\r\n        for prereq in prerequisites:\r\n            reverse_graph[prereq].append(node)\r\n    # Add nodes that appear only as prerequisites to reverse graph\r\n    for node in all_nodes:\r\n        if node not in reverse_graph:\r\n            reverse_graph[node] = []\r\n    \r\n    # Build the in-degree count correctly\r\n    in_degree = {}\r\n    all_nodes = set()\r\n    for node, prerequisites in graph.items():\r\n        all_nodes.add(node)\r\n        for prere"
+    }
+  },
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "window",
+    "seconds": 23.6757435290001,
+    "first_token_seconds": 3.6886336990010022,
+    "first_answer_seconds": 3.6886343380010658,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    \n    if k > len(nums):\n        return []\n    \n    # Calculate sum of first window\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    \n    # Slide the window\n    for i in range(1, len(nums) - k + 1):\n        # Remove left element and add right element\n        window_sum = window_sum - nums[i - 1] + nums[i + k - 1]\n        result.append(window_sum)\n    \n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 132,
+      "prompt_tokens": 63,
+      "total_tokens": 195,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 63,
+      "prompt_ms": 3662.769,
+      "prompt_per_token_ms": 58.13919047619047,
+      "prompt_per_second": 17.20010189012739,
+      "predicted_n": 132,
+      "predicted_ms": 19987.143,
+      "predicted_per_token_ms": 152.5736106870229,
+      "predicted_per_second": 6.554213376068805
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": true,
+      "error": "",
+      "code": "def window_sums(nums, k):\n    if k <= 0:\n        raise ValueError(\"k must be positive\")\n    \n    if k > len(nums):\n        return []\n    \n    # Calculate sum of first window\n    window_sum = sum(nums[:k])\n    result = [window_sum]\n    \n    # Slide the window\n    for i in range(1, len(nums) - k + 1):\n        # Remove left element and add right element\n        window_sum = window_sum - nums[i - 1] + nums[i + k - 1]\n        result.append(window_sum)\n    \n    return result\n"
+    }
+  },
+  {
+    "model": "qwen3coder",
+    "mode": "instruct",
+    "task": "security",
+    "seconds": 15.27066833200115,
+    "first_token_seconds": 5.60194106200106,
+    "first_answer_seconds": 5.601941484001145,
+    "content": "```python\nimport ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        if isinstance(ip, ipaddress.IPv4Address):\n            return ip.is_private and ip.version == 4\n        return False\n    except:\n        return False\n```\n",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 64,
+      "prompt_tokens": 116,
+      "total_tokens": 180,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 116,
+      "prompt_ms": 5593.886,
+      "prompt_per_token_ms": 48.2231551724138,
+      "prompt_per_second": 20.736925993843993,
+      "predicted_n": 64,
+      "predicted_ms": 9668.616,
+      "predicted_per_token_ms": 153.47009523809524,
+      "predicted_per_second": 6.515927408845278
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 16, in <module>\n    for x in ['172.15.1.1','172.32.0.0','192.169.0.0','127.0.0.1','169.254.1.1','0.0.0.0','100.64.0.1','8.8.8.8','::1','::ffff:10.1.1.1','bad','10.1.2.999','10.1.2.3/24']: assert not is_private_ipv4(x), x\n                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 127.0.0.1\n",
+      "code": "import ipaddress\n\ndef is_private_ipv4(text):\n    try:\n        ip = ipaddress.ip_address(text)\n        if isinstance(ip, ipaddress.IPv4Address):\n            return ip.is_private and ip.version == 4\n        return False\n    except:\n        return False\n"
+    }
+  }
+]

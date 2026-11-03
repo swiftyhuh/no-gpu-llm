@@ -1,0 +1,142 @@
+[
+  {
+    "model": "qwen35",
+    "mode": "off",
+    "task": "intervals",
+    "seconds": 15.74915529000009,
+    "first_token_seconds": 0.9978687819993866,
+    "first_answer_seconds": 0.997869193999577,
+    "content": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    \n    for i in range(1, len(sorted_intervals)):\n        last = sorted_intervals[i-1]\n        current = sorted_intervals[i]\n        \n        if current[0] <= last[1]:\n            last[1] = max(last[1], current[1])\n        else:\n            merged.append(current)\n            merged.append(last)\n    \n    return merged\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 132,
+      "prompt_tokens": 66,
+      "total_tokens": 198,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 66,
+      "prompt_ms": 995.475,
+      "prompt_per_token_ms": 15.082954545454546,
+      "prompt_per_second": 66.30000753409176,
+      "predicted_n": 132,
+      "predicted_ms": 14751.108,
+      "predicted_per_token_ms": 112.60387786259543,
+      "predicted_per_second": 8.880688826900325
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 24, in <module>\n    assert merge_intervals(x)==[(1,7),(10,10)]\n           ~~~~~~~~~~~~~~~^^^\n  File \"<string>\", line 16, in merge_intervals\n    last[1] = max(last[1], current[1])\n    ~~~~^^^\nTypeError: 'tuple' object does not support item assignment\n",
+      "code": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    sorted_intervals = sorted(intervals, key=lambda x: x[0])\n    merged = [sorted_intervals[0]]\n    \n    for i in range(1, len(sorted_intervals)):\n        last = sorted_intervals[i-1]\n        current = sorted_intervals[i]\n        \n        if current[0] <= last[1]:\n            last[1] = max(last[1], current[1])\n        else:\n            merged.append(current)\n            merged.append(last)\n    \n    return merged\n"
+    }
+  },
+  {
+    "model": "qwen35",
+    "mode": "off",
+    "task": "toposort",
+    "seconds": 42.27741591499944,
+    "first_token_seconds": 1.4994906429992625,
+    "first_answer_seconds": 1.4994926179997492,
+    "content": "```python\ndef topo_sort(graph):\n    \"\"\"\n    Perform topological sort on a graph where keys are nodes and values are lists of prerequisite nodes.\n    \n    Args:\n        graph (dict): A dictionary mapping each node to its list of prerequisite nodes.\n    \n    Returns:\n        list: A list of nodes in topological order (prerequisites before dependents).\n    \n    Raises:\n        ValueError: If the graph contains a cycle.\n    \"\"\"\n    # Build adjacency list and track in-degree for each node\n    in_degree = {node: 0 for node in graph}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            in_degree[prereq] += 1\n\n    # Queue of nodes with no prerequisites (in-degree 0)\n    ready = []\n    for node in graph:\n        if in_degree[node] == 0:\n            ready.append(node)\n\n    # Sort the initial list of ready nodes lexicographically\n    ready.sort()\n\n    result = []\n    for node in ready:\n        result.append(node)\n        # Decrease in-degree of all nodes that depend on this node\n        for dependent in graph[node]:\n            in_degree[dependent] -= 1\n            if in_degree[dependent] == 0:\n                # Insert dependent into the ready list and re-sort\n                ready.append(dependent)\n                ready.sort()\n\n    # If not all nodes were processed, there's a cycle\n    if len(result) != len(graph):\n        raise ValueError(\"Graph contains a cycle\")\n\n    return result\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 348,
+      "prompt_tokens": 80,
+      "total_tokens": 428,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 80,
+      "prompt_ms": 1479.269,
+      "prompt_per_token_ms": 18.4908625,
+      "prompt_per_second": 54.08076556731737,
+      "predicted_n": 348,
+      "predicted_ms": 40778.167,
+      "predicted_per_token_ms": 117.51633141210375,
+      "predicted_per_second": 8.5094555623356
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 49, in <module>\n    assert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<string>\", line 21, in topo_sort\n    in_degree[prereq] += 1\n    ~~~~~~~~~^^^^^^^^\nKeyError: 'base'\n",
+      "code": "def topo_sort(graph):\n    \"\"\"\n    Perform topological sort on a graph where keys are nodes and values are lists of prerequisite nodes.\n    \n    Args:\n        graph (dict): A dictionary mapping each node to its list of prerequisite nodes.\n    \n    Returns:\n        list: A list of nodes in topological order (prerequisites before dependents).\n    \n    Raises:\n        ValueError: If the graph contains a cycle.\n    \"\"\"\n    # Build adjacency list and track in-degree for each node\n    in_degree = {node: 0 for node in graph}\n    for node, prereqs in graph.items():\n        for prereq in prereqs:\n            in_degree[prereq] += 1\n\n    # Queue of nodes with no prerequisites (in-degree 0)\n    ready = []\n    for node in graph:\n        if in_degree[node] == 0:\n            ready.append(node)\n\n    # Sort the initial list of ready nodes lexicographically\n    ready.sort()\n\n    result = []\n    for node in ready:\n        result.append(node)\n        # Decrease in-degree of all nodes that depend on this node\n        for dependent in graph[node]:\n            in_degree[dependent] -= 1\n            if in_degree[dependent] == 0:\n                # Insert dependent into the ready list and re-sort\n                ready.append(dependent)\n                ready.sort()\n\n    # If not all nodes were processed, there's a cycle\n    if len(result) != len(graph):\n        raise ValueError(\"Graph contains a cycle\")\n\n    return result\n"
+    }
+  },
+  {
+    "model": "qwen35",
+    "mode": "off",
+    "task": "window",
+    "seconds": 10.112488935999863,
+    "first_token_seconds": 1.4347274869996909,
+    "first_answer_seconds": 1.4347277489996486,
+    "content": "```python\ndef window_sums(nums, k):\n    if k <= 0 or k > len(nums):\n        return []\n    if k == 1:\n        return [sum(nums)]\n    sums = [sum(nums[i:i+k]) for i in range(len(nums) - k + 1)]\n    return sums\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 74,
+      "prompt_tokens": 67,
+      "total_tokens": 141,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 67,
+      "prompt_ms": 1414.017,
+      "prompt_per_token_ms": 21.104731343283582,
+      "prompt_per_second": 47.3827400943553,
+      "predicted_n": 74,
+      "predicted_ms": 8677.63,
+      "predicted_per_token_ms": 118.87164383561642,
+      "predicted_per_second": 8.412435192558338
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 16, in <module>\n    assert window_sums([1,2],1)==[1,2]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "code": "def window_sums(nums, k):\n    if k <= 0 or k > len(nums):\n        return []\n    if k == 1:\n        return [sum(nums)]\n    sums = [sum(nums[i:i+k]) for i in range(len(nums) - k + 1)]\n    return sums\n"
+    }
+  },
+  {
+    "model": "qwen35",
+    "mode": "off",
+    "task": "security",
+    "seconds": 7.965315962999739,
+    "first_token_seconds": 2.3323029510002016,
+    "first_answer_seconds": 2.3323031509999055,
+    "content": "```python\ndef is_private_ipv4(text):\n    import ipaddress\n    try:\n        addr = ipaddress.IPv4Address(text)\n        return addr.is_private\n    except ValueError:\n        return False\n```",
+    "reasoning": "",
+    "usage": {
+      "completion_tokens": 49,
+      "prompt_tokens": 120,
+      "total_tokens": 169,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 120,
+      "prompt_ms": 2312.791,
+      "prompt_per_token_ms": 19.273258333333334,
+      "prompt_per_second": 51.88536275002799,
+      "predicted_n": 49,
+      "predicted_ms": 5632.906,
+      "predicted_per_token_ms": 117.35220833333334,
+      "predicted_per_second": 8.521356472130016
+    },
+    "finish": "stop",
+    "evaluation": {
+      "passed": false,
+      "error": "Traceback (most recent call last):\n  File \"<string>\", line 13, in <module>\n    for x in ['172.15.1.1','172.32.0.0','192.169.0.0','127.0.0.1','169.254.1.1','0.0.0.0','100.64.0.1','8.8.8.8','::1','::ffff:10.1.1.1','bad','10.1.2.999','10.1.2.3/24']: assert not is_private_ipv4(x), x\n                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 127.0.0.1\n",
+      "code": "def is_private_ipv4(text):\n    import ipaddress\n    try:\n        addr = ipaddress.IPv4Address(text)\n        return addr.is_private\n    except ValueError:\n        return False\n"
+    }
+  }
+]

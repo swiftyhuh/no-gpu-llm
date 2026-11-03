@@ -1,0 +1,146 @@
+== main suite (9 tasks)
+preset               passed runs  tok/s 1st code  s/task cut off errors RAM GiB
+heretic-off           9/9      1   10.6       7s      55       0      0    7.97
+qwen36-c5             9/9      1   10.2       7s      59       0      0    7.96
+qwen36-off           17/18     2   12.1       7s      50       0      0    10.8
+cybertiel-sharp       5/9      1    8.0       8s      64       0      0    8.89
+groot-q3              5/9      1    7.5       7s      71       0      0   12.72
+cybertiel-off         5/9      1    7.5       8s      74       0      0    8.83
+groot-off            10/18     2    6.4       7s     107       1      0    9.32
+ling-1200             4/9      1   15.7      82s     117       3      0    6.08
+mellum-think          4/9      1    8.1     163s     269       6      0   11.49
+ling-budget           3/9      1   16.7      52s      85       2      0    6.16
+ling                  2/9      1   16.6       3s      28       0      0     6.1
+k2-low                2/9      1    5.2       6s     101       0      0    6.69
+ling-think            2/9      1   15.9      59s     142       7      0     6.2
+minicpm-q4-think      2/9      1    8.9       0s     287       9      0    3.66
+minicpm-q4-off        1/9      1   10.3       4s      60       1      0    3.03
+groot-q3-nr           2/2      1    7.1       5s      23       0      0    8.99  partial
+qwen36-think          1/2      1   10.1     133s     196       0      0    None  partial
+groot-think           1/4      1    6.0       0s     424       4      0    None  partial
+cybertiel-think       1/4      1    7.5     164s     432       1      0     8.4  partial
+groot-q3-sys          0/1      1    7.2       7s      71       0      0    None  partial
+
+task              heretic-off     qwen36-c5    qwen36-off cybertiel-sha      groot-q3 cybertiel-off     groot-off     ling-1200  mellum-think   ling-budget          ling        k2-low    ling-think minicpm-q4-th minicpm-q4-of   groot-q3-nr  qwen36-think   groot-think cybertiel-thi  groot-q3-sys
+cpp_lru                   1/1           1/1           2/2           0/1           0/1           0/1           0/2           0/1           1/1           0/1           0/1           0/1           0/1           0/1           0/1           0/0           0/1           1/1           0/1           0/1
+cpp_matrix                1/1           1/1           2/2           0/1           1/1           0/1           1/2           0/1           0/1           0/1           0/1           0/1           0/1           0/1           0/1           0/0           1/1           0/1           0/1           0/0
+cpp_bugfix                1/1           1/1           2/2           1/1           1/1           1/1           0/2           0/1           0/1           0/1           0/1           0/1           0/1           0/1           0/1           0/0           0/0           0/1           0/0           0/0
+py_bugfix                 1/1           1/1           2/2           0/1           1/1           0/1           2/2           0/1           0/1           0/1           0/1           1/1           0/1           0/1           0/1           0/0           0/0           0/1           0/1           0/0
+py_topo                   1/1           1/1           2/2           1/1           0/1           1/1           2/2           1/1           1/1           0/1           0/1           1/1           0/1           0/1           0/1           0/0           0/0           0/0           0/0           0/0
+py_csv                    1/1           1/1           2/2           1/1           1/1           1/1           2/2           1/1           0/1           1/1           1/1           0/1           0/1           1/1           1/1           0/0           0/0           0/0           0/0           0/0
+java_library              1/1           1/1           1/2           0/1           0/1           0/1           0/2           0/1           0/1           0/1           0/1           0/1           0/1           0/1           0/1           0/0           0/0           0/0           1/1           0/0
+sql_report                1/1           1/1           2/2           1/1           1/1           1/1           2/2           1/1           1/1           1/1           1/1           0/1           1/1           1/1           0/1           1/1           0/0           0/0           0/0           0/0
+js_retry                  1/1           1/1           2/2           1/1           0/1           1/1           1/2           1/1           1/1           1/1           0/1           0/1           1/1           0/1           0/1           1/1           0/0           0/0           0/0           0/0
+
+== unseen suite (4 tasks)
+preset               passed runs  tok/s 1st code  s/task cut off errors RAM GiB
+qwen36-off            2/4      1   11.8       8s      52       0      0   10.33
+qwen36-c5             2/4      1   10.9       7s      55       0      0    7.51
+heretic-off           2/4      1   11.4       8s      58       0      0    7.38
+cybertiel-sharp       2/4      1    8.0      10s      73       0      0    8.31
+cybertiel-off         1/4      1    8.0       9s      75       0      0    8.27
+groot-q3-nr           0/4      1    6.9       7s      90       0      0    9.28
+
+task               qwen36-off     qwen36-c5   heretic-off cybertiel-sha cybertiel-off   groot-q3-nr
+c_pipe                    1/1           1/1           1/1           1/1           1/1           0/1
+prolog_lists              0/1           0/1           0/1           0/1           0/1           0/1
+java_streams              1/1           1/1           1/1           1/1           0/1           0/1
+cpp_oop                   0/1           0/1           0/1           0/1           0/1           0/1
+
+failures:
+  main   cybertiel-off     cpp_lru      stop       'compile: sol.hpp:46:18: error: request for member ‘erase’ in ‘((LRUCache<K, V>*)this)->LRUCache<K, V'
+  main   cybertiel-off     cpp_matrix   stop       "run: asan: test.cpp:11: int main(): Assertion `a.rows() == 2 && a.cols() == 3 && a.at(1, 2) == 0.0' "
+  main   cybertiel-off     py_bugfix    stop       'eback (most recent call last):\n  File "/w/test.py", line 11, in <module>\n    assert word_freq("The c'
+  main   cybertiel-off     java_library stop       'Exception in thread "main" java.lang.AssertionError: not borrowed\n\tat Test.ok(Test.java:6)\n\tat Test.'
+  main   cybertiel-sharp   cpp_lru      stop       'compile: sol.hpp:39:18: error: request for member ‘size’ in ‘((LRUCache<K, V>*)this)->LRUCache<K, V>'
+  main   cybertiel-sharp   cpp_matrix   stop       'run: asan: test.cpp:23: int main(): Assertion `throws<std::invalid_argument>([] { Matrix x(2, -1); }'
+  main   cybertiel-sharp   py_bugfix    stop       '", 2), ("the", 2), ("dog", 1)]\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/w/so'
+  main   cybertiel-sharp   java_library stop       'Exception in thread "main" java.lang.AssertionError: not borrowed\n\tat Test.ok(Test.java:6)\n\tat Test.'
+  main   cybertiel-think   cpp_lru      stop       'compile: sol.hpp:50:42: error: binding reference of type ‘std::lock_guard<std::mutex>::mutex_type&’ '
+  main   cybertiel-think   cpp_matrix   stop       'run: asan: test.cpp:22: int main(): Assertion `throws<std::invalid_argument>([] { Matrix x(0, 2); })'
+  main   cybertiel-think   py_bugfix    time_limit 'Traceback (most recent call last):\n  File "/w/test.py", line 2, in <module>\n    from sol import pagi'
+  main   groot-off         cpp_lru      stop       'compile: sol.hpp:33:19: error: ‘class std::deque<std::pair<int, int>, std::allocator<std::pair<int, '
+  main   groot-off         cpp_bugfix   length     'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   groot-off         java_library stop       'compile: Library.java:73: error: method sort in interface List<E> cannot be applied to given types;'
+  main   groot-off         cpp_lru      stop       'compile: sol.hpp:23:16: error: ‘class std::deque<LRUCache<int, int>::Node, std::allocator<LRUCache<i'
+  main   groot-off         cpp_matrix   stop       "run: asan: test.cpp:18: int main(): Assertion `asg == a' failed.\n"
+  main   groot-off         cpp_bugfix   stop       'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   groot-off         java_library stop       'compile: Library.java:76: error: method sort in interface List<E> cannot be applied to given types;'
+  main   groot-off         js_retry     stop       'ION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ [AsyncFunction: retryWrapper]\n- 5'
+  main   groot-q3          cpp_lru      stop       'compile: int, int>, std::allocator<std::pair<const int, int> > >::const_iterator]’\n 2161 |       spl'
+  main   groot-q3          py_topo      stop       "ert topo_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^"
+  main   groot-q3          java_library stop       'compile: Library.java:1: error: class, interface, enum, or record expected'
+  main   groot-q3          js_retry     stop       'ernal/modules/cjs/loader:261:19)\n    at Module.require (node:internal/modules/cjs/loader:1713:12)\n  '
+  main   groot-q3-sys      cpp_lru      stop       'compile: sol.hpp:45:17: error: subscripted value is neither array nor pointer'
+  main   groot-think       cpp_matrix   length     'compile: test.cpp:11:5: note: ‘<typeprefixerror>Matrix’ declared here'
+  main   groot-think       cpp_bugfix   length     'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   groot-think       py_bugfix    length     'Traceback (most recent call last):\n  File "/w/test.py", line 2, in <module>\n    from sol import pagi'
+  main   k2-low            cpp_lru      stop       'compile: test.cpp:17:53: note: ‘<typeprefixerror>c’ declared here'
+  main   k2-low            cpp_matrix   stop       'run:    f9\n  Global init order:       f6\n  Poisoned by user:        f7\n  Container overflow:      fc'
+  main   k2-low            cpp_bugfix   stop       'run:    f9\n  Global init order:       f6\n  Poisoned by user:        f7\n  Container overflow:      fc'
+  main   k2-low            py_csv       stop       'Traceback (most recent call last):\n  File "/w/test.py", line 16, in <module>\n    assert t["top_produ'
+  main   k2-low            java_library stop       'compile: Library.java:43: error: cannot find symbol'
+  main   k2-low            sql_report   stop       'Traceback (most recent call last):\n  File "/w/test.py", line 13, in <module>\n    rows = [tuple(r) fo'
+  main   k2-low            js_retry     stop       'ernal/modules/cjs/loader:261:19)\n    at Module.require (node:internal/modules/cjs/loader:1713:12)\n  '
+  main   ling              cpp_lru      stop       'compile: sol.hpp:43:13: error: subscripted value is neither array nor pointer'
+  main   ling              cpp_matrix   stop       'compile: test.cpp:18:58: error: use of deleted function ‘constexpr Matrix& Matrix::operator=(const M'
+  main   ling              cpp_bugfix   stop       "run: asan: test.cpp:12: int main(): Assertion `l.size() == 2 && l.at(0) == 1 && l.at(1) == 2' failed"
+  main   ling              py_bugfix    stop       'Traceback (most recent call last):\n  File "/w/test.py", line 17, in <module>\n    assert base == b0 a'
+  main   ling              py_topo      stop       '):\n  File "/w/test.py", line 4, in <module>\n    assert topo_sort({\'app\':[\'lib\'],\'lib\':[\'base\']})==[\''
+  main   ling              java_library stop       'compile: Library.java:55: error: cannot find symbol'
+  main   ling              js_retry     stop       'TypeError: shouldRetry is not a function\n    at retry (/w/sol.js:12:12)\n    at async /w/test.js:7:13'
+  main   ling-1200         cpp_lru      stop       'compile: sol.hpp:40:19: error: subscripted value is neither array nor pointer'
+  main   ling-1200         cpp_matrix   length     'compile: lity:129:3: error: a template declaration cannot appear at block scope'
+  main   ling-1200         cpp_bugfix   length     'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   ling-1200         py_bugfix    stop       ' call last):\n  File "/w/test.py", line 16, in <module>\n    assert merge_config(base, over) == {"a": '
+  main   ling-1200         java_library stop       'compile: Library.java:1: error: unnamed classes are a preview feature and are disabled by default.'
+  main   ling-budget       cpp_lru      stop       'compile: sol.hpp:26:26: error: request for member ‘end’ in ‘((LRUCache<K, V>*)this)->LRUCache<K, V>:'
+  main   ling-budget       cpp_matrix   length     'compile: sol.hpp:75:24: error: ‘invalid_argument’ is not a member of ‘std’'
+  main   ling-budget       cpp_bugfix   length     'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   ling-budget       py_bugfix    stop       ' call last):\n  File "/w/test.py", line 16, in <module>\n    assert merge_config(base, over) == {"a": '
+  main   ling-budget       py_topo      stop       'no answer'
+  main   ling-budget       java_library stop       'compile: Library.java:1: error: unnamed classes are a preview feature and are disabled by default.'
+  main   ling-think        cpp_lru      stop       'compile: sol.hpp:40:15: error: subscripted value is neither array nor pointer'
+  main   ling-think        cpp_matrix   length     'compile: test.cpp:11:5: note: ‘<typeprefixerror>Matrix’ declared here'
+  main   ling-think        cpp_bugfix   length     'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   ling-think        py_bugfix    length     'Traceback (most recent call last):\n  File "/w/test.py", line 2, in <module>\n    from sol import pagi'
+  main   ling-think        py_topo      length     'no answer'
+  main   ling-think        py_csv       length     'Traceback (most recent call last):\n  File "/w/test.py", line 2, in <module>\n    from sol import summ'
+  main   ling-think        java_library length     'compile: Library.java:1: error: unnamed classes are a preview feature and are disabled by default.'
+  main   mellum-think      cpp_matrix   length     'no answer'
+  main   mellum-think      cpp_bugfix   length     'no answer'
+  main   mellum-think      py_bugfix    length     'Traceback (most recent call last):\n  File "/w/test.py", line 2, in <module>\n    from sol import pagi'
+  main   mellum-think      py_csv       length     'Traceback (most recent call last):\n  File "/w/test.py", line 2, in <module>\n    from sol import summ'
+  main   mellum-think      java_library length     'no answer'
+  main   minicpm-q4-off    cpp_lru      stop       'compile: , int>::Node> >::value_type&&’ {aka ‘LRUCache<int, int>::Node&&’}\n        /usr/include/c++/'
+  main   minicpm-q4-off    cpp_matrix   stop       "run: asan: test.cpp:17: int main(): Assertion `!(copy == a)' failed.\n"
+  main   minicpm-q4-off    cpp_bugfix   length     'compile: test.cpp:13:55: error: ‘l’ was not declared in this scope'
+  main   minicpm-q4-off    py_bugfix    stop       'timed out after 30s (hang or deadlock)'
+  main   minicpm-q4-off    py_topo      stop       "po_sort({'app':['lib'],'lib':['base']})==['base','lib','app']\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^"
+  main   minicpm-q4-off    java_library stop       'compile: Library.java:18: error: cannot find symbol'
+  main   minicpm-q4-off    sql_report   stop       'Traceback (most recent call last):\n  File "/w/test.py", line 13, in <module>\n    rows = [tuple(r) fo'
+  main   minicpm-q4-off    js_retry     stop       'R_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ [AsyncFunction: tryRetry]'
+  main   minicpm-q4-think  cpp_lru      length     'no answer'
+  main   minicpm-q4-think  cpp_matrix   length     'compile: test.cpp:11:5: note: ‘<typeprefixerror>Matrix’ declared here'
+  main   minicpm-q4-think  cpp_bugfix   length     'run: timed out after 30s (hang or deadlock)'
+  main   minicpm-q4-think  py_bugfix    length     'no answer'
+  main   minicpm-q4-think  py_topo      length     'no answer'
+  main   minicpm-q4-think  java_library length     "compile: Library.java:37: error: ';' expected"
+  main   minicpm-q4-think  js_retry     length     'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n5 !== 1\n\n    at /w/test.js:15'
+  main   qwen36-off        java_library stop       'compile: Library.java:76: error: cannot find symbol'
+  main   qwen36-think      cpp_lru      stop       'compile: sol.hpp:37:49: error: ‘lock’ was not declared in this scope; did you mean ‘clock’?'
+  unseen cybertiel-off     prolog_lists stop       'e_dups([1,2,1,3,2,4],[1,2,3,4])\nWarning: [Thread main] /w/test.pl:3: main\nWarning: [Thread main]   I'
+  unseen cybertiel-off     java_streams stop       'compile: Report.java:53: error: incompatible types: inference variable T has incompatible bounds'
+  unseen cybertiel-off     cpp_oop      stop       'compile: sol.hpp:128:26: error: ‘std::vector<std::unique_ptr<Shape> > Scene::shapes_’ is private wit'
+  unseen cybertiel-sharp   prolog_lists stop       'e_dups([1,2,1,3,2,4],[1,2,3,4])\nWarning: [Thread main] /w/test.pl:3: main\nWarning: [Thread main]   I'
+  unseen cybertiel-sharp   cpp_oop      stop       'compile: sol.hpp:122:26: error: ‘std::vector<std::unique_ptr<Shape> > Scene::shapes_’ is private wit'
+  unseen groot-q3-nr       c_pipe       stop       'compile: sol.h:39:16: error: too few arguments to function ‘waitpid’; expected 3, have 2'
+  unseen groot-q3-nr       prolog_lists stop       '\nERROR: [Thread main] /w/sol.pl:4:0: Syntax error: Unexpected end of file\nERROR: [Thread main] /w/te'
+  unseen groot-q3-nr       java_streams stop       'compile: Report.java:31: error: cannot find symbol'
+  unseen groot-q3-nr       cpp_oop      stop       'compile: sol.hpp:97:32: error: ‘std::vector<std::unique_ptr<Shape> > Scene::shapes_’ is private with'
+  unseen heretic-off       prolog_lists stop       'e_dups([1,2,1,3,2,4],[1,2,3,4])\nWarning: [Thread main] /w/test.pl:3: main\nWarning: [Thread main]   I'
+  unseen heretic-off       cpp_oop      stop       'compile: sol.hpp:132:32: error: ‘std::vector<std::unique_ptr<Shape> > Scene::shapes_’ is private wit'
+  unseen qwen36-c5         prolog_lists stop       'e_dups([1,2,1,3,2,4],[1,2,3,4])\nWarning: [Thread main] /w/test.pl:3: main\nWarning: [Thread main]   I'
+  unseen qwen36-c5         cpp_oop      stop       'compile: test.cpp:15:11: error: no matching function for call to ‘Scene::Scene()’'
+  unseen qwen36-off        prolog_lists stop       'e_dups([1,2,1,3,2,4],[1,2,3,4])\nWarning: [Thread main] /w/test.pl:3: main\nWarning: [Thread main]   I'
+  unseen qwen36-off        cpp_oop      stop       'compile: test.cpp:15:11: error: no matching function for call to ‘Scene::Scene()’'
